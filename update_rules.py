@@ -55,7 +55,6 @@ def main():
     rules = phishstats
     rules += openphish
 
-    print(rules)
     with open(output_file, "r+") as f:
         content_file = f.read()
         for rule in rules:
