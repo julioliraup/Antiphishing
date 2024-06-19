@@ -31,22 +31,22 @@ def create_suricata_rules(urls, reference):
             if reference == "phishstats.info":
                 phish_url = parts[2].split('//')[1][0:-1]
             else:
-                phish_url = parts.split('//')[1][0:]
+                phish_url = parts.split('//')[1][0:-1]
 
-            new_phish_url = phish_url.replace('.','[.]')
+            new_phish_url = phish_url.replace('.',' .')[0:-1]
 
             if "/" not in phish_url[0:-1]:
-                rule = f'alert dns $HOME_NET any -> any any (msg:"AT Related Malicious Domain ({new_phish_url}) in DNS Lookup"; dns.query; content:"{phish_url[0:-1]}"; isdataat:!1,relative; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
+                rule = f'alert dns $HOME_NET any -> any any (msg:"AT Related Malicious Domain ({new_phish_url}) in DNS Lookup"; dns.query; bsize: {len(phish_url)+1} content:"{phish_url}"; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
                 sid += 1
-                rule_tls = f'alert tls $HOME_NET any -> $EXTERNAL_NET any (msg:"AT Related Malicious Domain ({new_phish_url}) in TLS SNI"; flow:established,to_server; tls.sni; dotprefix; content:".{phish_url[0:-1]}"; endswith; fast_pattern; reference:url,github.com/julioliraup/Antiphishing; reference:url,{reference}; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
+                rule_tls = f'alert tls $HOME_NET any -> $EXTERNAL_NET any (msg:"AT Related Malicious Domain ({new_phish_url}) in TLS SNI"; flow:established,to_server; tls.sni; dotprefix; content:".{phish_url}"; endswith; fast_pattern; reference:url,github.com/julioliraup/Antiphishing; reference:url,{reference}; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
             else:
                 domain = phish_url.split('/')[0]
                 path = phish_url.split(domain)[1]
-                rule = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:to_server,established; content:"GET {path}"; http_uri; fast_pattern:only; content:"Host|3A| {domain}"; http_header; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
-
+                rule = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:established,to_server; http.method; content:"GET"; http.uri; content: "{path}"; startswith; fast_pattern; http.host; content:"{domain}"; bsize:{len(domain)+1}; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
+                
             rules.append(rule)
             if len(rule_tls) > 5: rules.append(rule_tls)
-            sid += 1  # Incrementa o SID para a próxima regra
+            sid += 1
     return rules
 
 def main():
