@@ -1,0 +1,10 @@
+#
+# Antiphishing - License under GPLv3 [Free software]
+# Range: 6000000 - 6100000
+# False positive? or new rule?
+# Please open a issue: https://github.com/julioliraup/Antiphishing/issues
+# This rule updates hourly 
+#
+
+alert dns $HOME_NET any -> any any (msg:"AT Related Malicious Domains in DNS Lookup"; dns.query; dataset:isset, phishing-domain; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2024_06_20;)
+alert tls $HOME_NET any -> any any (msg:"AT Related Malicious Domains in TLS SNI"; tls.sni; dataset:isset, phishing-domain; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000001; rev:1; metadata: signature_severity Major, created_et 2024_06_20;)
