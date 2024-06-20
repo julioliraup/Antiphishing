@@ -4,6 +4,7 @@ from datetime import datetime
 phishstats_url = "https://phishstats.info/phish_score.csv"
 openphish_url = "https://openphish.com/feed.txt"
 output_file = "antiphishing.rules"
+phishing_list = "phishing_list.txt"
 sid_file = "sid_tracker.txt"
 
 def fetch_phishing_urls(url):
@@ -27,6 +28,12 @@ def update_last_sid(sid):
     with open(sid_file, "w") as f:
         f.write(str(sid))
 
+def update_dataset(domain):
+    with open(phishing_list, "r+") as f:
+        content_file = f.read()
+        if domain not in content_file:
+            f.write(rule + "\n")
+
 def create_suricata_rules(urls, reference, last_sid):
     rules = []
     sid = last_sid
@@ -42,16 +49,14 @@ def create_suricata_rules(urls, reference, last_sid):
         if len(parts) > 0:
             current_data = datetime.now().strftime("%Y_%m_%d")
             if reference == "phishstats.info":
-                phish_url = parts[2].split('//')[1][0:-1]
+                phish_url = parts[2].split('//')[1][0:-2]
             else:
                 phish_url = parts.split('//')[1][0:-1]
 
             new_phish_url = phish_url.replace('.',' .')[0:-1]
 
-            if "/" not in phish_url[0:-1]:
-                rule = f'alert dns $HOME_NET any -> any any (msg:"AT Related Malicious Domain ({new_phish_url}) in DNS Lookup"; dns.query; bsize:{len(phish_url)+1}; content:"{phish_url}"; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
-                sid += 1
-                rule_tls = f'alert tls $HOME_NET any -> $EXTERNAL_NET any (msg:"AT Related Malicious Domain ({new_phish_url}) in TLS SNI"; flow:established,to_server; tls.sni; dotprefix; content:".{phish_url}"; endswith; fast_pattern; reference:url,github.com/julioliraup/Antiphishing; reference:url,{reference}; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
+            if "/" not in phish_url:
+                update_dataset(phish_url) 
             else:
                 domain = phish_url.split('/')[0]
                 path = phish_url.split(domain)[1]
