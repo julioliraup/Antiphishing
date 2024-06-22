@@ -1,4 +1,5 @@
 import requests
+from re import search
 from datetime import datetime
 
 phishstats_url = "https://phishstats.info/phish_score.csv"
@@ -24,7 +25,14 @@ def get_last_sid():
     except ValueError:
         return 6000000 
 
-def update_last_sid(sid):
+def update_last_sid():
+    sid = None
+    with open(output_file, 'r') as file:
+        file = file.readlines()
+        last_line = file[-1].strip()
+        match = search(r'sid:(\d+);', last_line)
+        sid = match.group(1)
+
     with open(sid_file, "w") as f:
         f.write(str(sid))
 
@@ -58,16 +66,17 @@ def create_suricata_rules(urls, reference, last_sid):
 
             if "/" not in phish_url:
                 update_dataset(phish_url) 
+                sid += 1
             else:
                 domain = phish_url.split('/')[0]
                 path = phish_url.split(domain)[1]
 
                 if domain not in rule or path not in rule:
                     rule = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"{path}"; startswith; fast_pattern; http.host; bsize:{len(domain)+1}; content:"{domain}"; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
+                    sid += 1
 
             rules.append(rule)
             if len(rule_tls) > 5: rules.append(rule_tls)
-            sid += 1
     return rules, sid
 
 def main():
@@ -86,7 +95,7 @@ def main():
             if rule[0:150] not in content_file:
                 f.write(rule + "\n")
     
-    update_last_sid(last_sid)
+    update_last_sid()
     print(f"Rulesets: {output_file}")
 
 if __name__ == "__main__":
