@@ -32,7 +32,7 @@ def update_dataset(domain):
     with open(phishing_list, "r+") as f:
         content_file = f.read()
         if domain not in content_file:
-            f.write(rule + "\n")
+            f.write(domain + "\n")
 
 def create_suricata_rules(urls, reference, last_sid):
     rules = []
