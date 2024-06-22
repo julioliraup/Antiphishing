@@ -37,6 +37,7 @@ def update_dataset(domain):
 def create_suricata_rules(urls, reference, last_sid):
     rules = []
     sid = last_sid
+    urls = list(set(urls))
     for url in urls:
         parts = ""
         rule = ""
@@ -60,7 +61,9 @@ def create_suricata_rules(urls, reference, last_sid):
             else:
                 domain = phish_url.split('/')[0]
                 path = phish_url.split(domain)[1]
-                rule = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"{path}"; startswith; fast_pattern; http.host; bsize:{len(domain)+1}; content:"{domain}"; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
+
+                if domain not in rule or path not in rule:
+                    rule = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"{path}"; startswith; fast_pattern; http.host; bsize:{len(domain)+1}; content:"{domain}"; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)'
 
             rules.append(rule)
             if len(rule_tls) > 5: rules.append(rule_tls)
@@ -75,12 +78,12 @@ def main():
     phishstats, last_sid = create_suricata_rules(fetch_phishing_urls(phishstats_url)[8:], 'phishstats.info', last_sid)
     openphish, last_sid = create_suricata_rules(fetch_phishing_urls(openphish_url), 'openphish.com', last_sid)
     
-    rules = phishstats + openphish
+    rules = list(filter(None, phishstats + openphish))
     
     with open(output_file, "r+") as f:
         content_file = f.read()
         for rule in rules:
-            if rule[0:130] not in content_file:
+            if rule[0:150] not in content_file:
                 f.write(rule + "\n")
     
     update_last_sid(last_sid)
