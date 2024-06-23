@@ -5,7 +5,7 @@ from datetime import datetime
 phishstats_url = "https://phishstats.info/phish_score.csv"
 openphish_url = "https://openphish.com/feed.txt"
 output_file = "antiphishing.rules"
-phishing_list = "phishing_list.txt"
+phishing_list = "phishing.lst"
 sid_file = "sid_tracker.txt"
 
 def fetch_phishing_urls(url):
