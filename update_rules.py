@@ -1,5 +1,6 @@
 import requests
 from re import search
+from base64 import b64encode
 from datetime import datetime
 
 phishstats_url = "https://phishstats.info/phish_score.csv"
@@ -40,6 +41,7 @@ def update_dataset(domain):
     with open(phishing_list, "r+") as f:
         content_file = f.read()
         if domain not in content_file:
+            domain = b64encode(domain.encode()).decode()
             f.write(domain + "\n")
 
 def create_suricata_rules(urls, reference, last_sid):
