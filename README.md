@@ -10,14 +10,7 @@ Our sources:
 2. [Openphish](https://openphish.com/)
 
 # Use
-After download `antiphishing.rules` and `phishing.lst` move for `/etc/suricata` and edit `/etc/suricata/suricata.yml` add:
-```yaml
-datasets:
-    phishing-domain:
-        type: string
-        state: phishing.lst # or /path/to/phishing.lst
-```
-
+After download `antiphishing.rules` and `phishing.lst` move for `/etc/suricata` or you directory rulesets.
 Now restart suricata daemon.
 
 # Updates
