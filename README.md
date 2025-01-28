@@ -15,3 +15,5 @@ Now restart suricata daemon.
 
 # Updates
 Our rule updates hourly and includes SIDs that take other rulesets into consideration. Range: 6000000 - 6100000
+
+**Note:** The rules are replaced every hour, so you need to update the rules every hour. Dont use cumulative rulesets, the SIDs are changed every hour.
