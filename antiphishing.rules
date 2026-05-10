@@ -1,6 +1,6 @@
 # Suricata Antiphishing rules
 # Created by github.com/julioliraup/Antiphishing
-# Last updated: 2026-05-10 17:48:47 GMT-0300
+# Last updated: 2026-05-10 18:48:52 GMT-0300
 # SID range: 6000000-6100000
 #
 alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:suspicious-traffic; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)
@@ -645,3 +645,4 @@ alert http $HOME_NET any -> any any (msg:"AT related malicious URL (gateway-desk
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (allegro .91023747462349134 .lat/)"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/"; startswith; fast_pattern; http.host; bsize:30; content:"allegro.91023747462349134.lat"; reference:url,phishstats.info; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000638; rev:1; metadata: signature_severity Major, created_et 2026_05_10;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (olyp01nxt-zjbb .c8onkf .top/o/vdnby/1778423729469#selectedbank2&LOADS)"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/o/vdnby/1778423729469#selectedbank2&LOADS"; startswith; fast_pattern; http.host; bsize:26; content:"olyp01nxt-zjbb.c8onkf.top"; reference:url,phishstats.info; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000639; rev:1; metadata: signature_severity Major, created_et 2026_05_10;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (ssoledgrcom .wixstudio .com/start)"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/start"; startswith; fast_pattern; http.host; bsize:26; content:"ssoledgrcom.wixstudio.com"; reference:url,phishstats.info; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000640; rev:1; metadata: signature_severity Major, created_et 2026_05_10;)
+alert http $HOME_NET any -> any any (msg:"AT related malicious URL (youssef .acces948207 .pro/)"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/"; startswith; fast_pattern; http.host; bsize:24; content:"youssef.acces948207.pro"; reference:url,phishstats.info; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000641; rev:1; metadata: signature_severity Major, created_et 2026_05_10;)
