@@ -39,3 +39,4 @@ done < phishing.lst
 echo -e "\nDone!"
 
 mv "$TEMP_FILE" phishing.lst
+rm "$TEMP_FILE"
