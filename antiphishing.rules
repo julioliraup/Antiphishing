@@ -1,6 +1,6 @@
 # Suricata Antiphishing rules
 # Created by github.com/julioliraup/Antiphishing
-# Last updated: 2026-05-11 23:42:46 GMT-0300
+# Last updated: 2026-05-11 23:42:56 GMT-0300
 # SID range: 6000000-6100000
 #
 alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:suspicious-traffic; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)
@@ -1623,3 +1623,4 @@ alert http $HOME_NET any -> any any (msg:"AT related malicious URL (home-trezor 
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (ins-tagram .com/h5/)"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/h5/"; startswith; fast_pattern; http.host; bsize:14; content:"ins-tagram.com"; endswith; nocase; reference:url,phishstats.info; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6001616; rev:1; metadata: signature_severity Major, created_et 2026_05_11;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (member-area-netfilx .dynv6 .net/login)"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/login"; startswith; fast_pattern; http.host; bsize:29; content:"member-area-netfilx.dynv6.net"; endswith; nocase; reference:url,phishstats.info; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6001617; rev:1; metadata: signature_severity Major, created_et 2026_05_11;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (dustswap .pages .dev/app/)"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/app/"; startswith; fast_pattern; http.host; bsize:18; content:"dustswap.pages.dev"; endswith; nocase; reference:url,phishstats.info; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6001618; rev:1; metadata: signature_severity Major, created_et 2026_05_11;)
+alert http $HOME_NET any -> any any (msg:"AT related malicious URL (reviewattinformation .z6 .web .core .windows .net/)"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"/"; startswith; fast_pattern; http.host; bsize:44; content:"reviewattinformation.z6.web.core.windows.net"; endswith; nocase; reference:url,phishstats.info; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6001619; rev:1; metadata: signature_severity Major, created_et 2026_05_11;)
