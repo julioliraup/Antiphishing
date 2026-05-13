@@ -1,11 +1,8 @@
 import requests
-from re import search
-from base64 import b64encode, b64decode
 from datetime import datetime
-import os
 
 phishstats_url = "https://api.phishstats.info/api/phishing?_sort=-id"
-openphish_url = "https://openphish.com/feed.txt"
+openphish_url = "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt"
 output_file = "antiphishing.rules"
 phishing_list = "phishing.lst"
 sid_file = "sid_tracker.txt"
@@ -61,9 +58,8 @@ def is_domain_in_rules(domain, rules):
 def is_domain_in_phishing_list(domain):
     try:
         with open(phishing_list, "r") as f:
-            domains = f.readlines()
-            encoded_domain = b64encode(domain.encode()).decode()
-            return encoded_domain + "\n" in domains
+            domains = f.read().splitlines()
+            return domain in domains
     except FileNotFoundError:
         return False
 
@@ -71,8 +67,7 @@ def update_dataset(domain, rules):
     # Verifica se o domínio já existe nas regras ou na lista
     if not is_domain_in_rules(domain, rules) and not is_domain_in_phishing_list(domain):
         with open(phishing_list, "a") as f:
-            encoded_domain = b64encode(domain.encode()).decode()
-            f.write(encoded_domain + "\n")
+            f.write(domain + "\n")
 
 def create_suricata_rules(urls, reference, last_sid, existing_rules):
     rules = []
@@ -93,6 +88,7 @@ def create_suricata_rules(urls, reference, last_sid, existing_rules):
                 phish_url = url
 
             new_phish_url = phish_url.replace('.',' .')
+            new_phish_url = phish_url.replace(';','\;')
 
             if "/" not in phish_url:
                 # Se for apenas domínio, adiciona à lista de phishing
@@ -106,7 +102,7 @@ def create_suricata_rules(urls, reference, last_sid, existing_rules):
 
                 # Verifica se o domínio/path já existe nas regras
                 if not is_domain_in_rules(domain, existing_rules):
-                    rule = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:established,to_server; http.method; content:"GET"; http.uri; content:"{path}"; startswith; fast_pattern; http.host; bsize:{len(domain)+1}; content:"{domain}"; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)\n'
+                    rule = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:established,to_server; http.uri; content:"{path}"; startswith; fast_pattern; http.host; content:"{domain.lower()}"; endswith; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)\n'
                     sid += 1
 
             if rule:
