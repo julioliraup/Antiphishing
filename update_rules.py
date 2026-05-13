@@ -143,7 +143,8 @@ def main():
     )
 
     # Mantém a regra DNS fixa e adiciona as novas regras
-    dns_rule = 'alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:suspicious-traffic; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n\n'
+    domain_rule = 'alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:suspicious-traffic; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n\n
+    alert tls $HOME_NET any -> any any (msg:"AT TLS SNI to suspicious domain - Phishing"; tls.sni; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; reference:url,julioliraup.github.io/ET/signature.html?sid=6000001; classtype:social-engineering; sid:6000001; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)'
     
     current_time = datetime.now()
     gmt_offset = current_time.astimezone().strftime('%z')
@@ -160,7 +161,7 @@ def main():
     old_rules = [r for r in existing_rules if r.strip().startswith("alert http")]
 
     # Combina todas as regras
-    all_rules = [header, dns_rule] + old_rules + phishstats + openphish
+    all_rules = [header, domain_rule] + old_rules + phishstats + openphish
 
     # Escreve as regras no arquivo
     with open(output_file, "w") as f:
