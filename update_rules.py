@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime
+from base64 import b64encode
 
 phishstats_url = "https://api.phishstats.info/api/phishing?_sort=-id"
 openphish_url = "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt"
@@ -58,8 +59,9 @@ def is_domain_in_rules(domain, rules):
 def is_domain_in_phishing_list(domain):
     try:
         with open(phishing_list, "r") as f:
-            domains = f.read().splitlines()
-            return domain in domains
+            domains = f.readlines()
+            encoded_domain = b64encode(domain.encode()).decode()
+            return encoded_domain + "\n" in domains
     except FileNotFoundError:
         return False
 
@@ -67,7 +69,8 @@ def update_dataset(domain, rules):
     # Verifica se o domínio já existe nas regras ou na lista
     if not is_domain_in_rules(domain, rules) and not is_domain_in_phishing_list(domain):
         with open(phishing_list, "a") as f:
-            f.write(domain + "\n")
+            encoded_domain = b64encode(domain.encode()).decode()
+            f.write(encoded_domain + "\n")
 
 def create_suricata_rules(urls, reference, last_sid, existing_rules):
     rules = []
@@ -102,7 +105,7 @@ def create_suricata_rules(urls, reference, last_sid, existing_rules):
 
                 # Verifica se o domínio/path já existe nas regras
                 if not is_domain_in_rules(domain, existing_rules):
-                    rule = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:established,to_server; http.uri; content:"{path}"; startswith; fast_pattern; http.host; content:"{domain.lower()}"; endswith; reference:url,{reference}; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)\n'
+                    rule = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:established,to_server; http.uri; content:"{path}"; startswith; fast_pattern; http.host; content:"{domain.lower()}"; endswith; reference:url,{reference}; reference:url,julioliraup.github.io/ET/signature.html?sid={sid}; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)\n'
                     sid += 1
 
             if rule:
