@@ -1,6 +1,6 @@
 # Suricata Antiphishing rules
 # Created by github.com/julioliraup/Antiphishing
-# Last updated: 2026-05-18 10:02:06 GMT-0300
+# Last updated: 2026-05-18 11:02:29 GMT-0300
 # SID range: 6000000-6100000
 #
 alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)
@@ -2797,3 +2797,4 @@ alert http $HOME_NET any -> any any (msg:"AT related malicious URL (thriving-bel
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (record.wasmer.app/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"record.wasmer.app"; endswith; reference:url,openphish.com; reference:url,julioliraup.github.io/ET/signature.html?sid=6002792; classtype:social-engineering; sid:6002792; rev:1; metadata: signature_severity Major, created_et 2026_05_18;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (40000ylg.com/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"40000ylg.com"; endswith; reference:url,openphish.com; reference:url,julioliraup.github.io/ET/signature.html?sid=6002793; classtype:social-engineering; sid:6002793; rev:1; metadata: signature_severity Major, created_et 2026_05_18;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (www.dpdlocanz.top/com)"; flow:established,to_server; http.uri; content:"/com"; startswith; fast_pattern; http.host; content:"www.dpdlocanz.top"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6002794; classtype:social-engineering; sid:6002794; rev:1; metadata: signature_severity Major, created_et 2026_05_18;)
+alert http $HOME_NET any -> any any (msg:"AT related malicious URL (touralmarocco.it/blog/wp-admin/ar2gordib2o/)"; flow:established,to_server; http.uri; content:"/blog/wp-admin/ar2gordib2o/"; startswith; fast_pattern; http.host; content:"touralmarocco.it"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6002795; classtype:social-engineering; sid:6002795; rev:1; metadata: signature_severity Major, created_et 2026_05_18;)
