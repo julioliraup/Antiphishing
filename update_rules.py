@@ -1,6 +1,7 @@
 import requests
 from datetime import datetime
 from base64 import b64encode
+import hashlib
 
 phishstats_url = "https://api.phishstats.info/api/phishing?_sort=-id"
 openphish_url = "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt"
@@ -169,6 +170,13 @@ def main():
     with open(output_file, "w") as f:
         for rule in all_rules:
             f.write(rule)
+
+    # Gera o hash MD5 do arquivo de regras para verificação de integridade (Suricata)
+    with open(output_file, "rb") as f:
+        md5_hash = hashlib.md5(f.read()).hexdigest()
+    
+    with open(output_file + ".md5", "w") as f:
+        f.write(md5_hash + "\n")
 
     # Atualiza o último SID
     with open(sid_file, "w") as f:
