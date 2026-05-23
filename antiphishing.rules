@@ -1,6 +1,6 @@
 # Suricata Antiphishing rules
 # Created by github.com/julioliraup/Antiphishing
-# Last updated: 2026-05-23 07:34:13 GMT-0300
+# Last updated: 2026-05-23 08:34:45 GMT-0300
 # SID range: 6000000-6100000
 #
 alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)
@@ -5742,3 +5742,4 @@ alert http $HOME_NET any -> any any (msg:"AT related malicious URL (wordpress-21
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (ameli-mescompte.com/?useremail=)"; flow:established,to_server; http.uri; content:"/?useremail="; startswith; fast_pattern; http.host; content:"ameli-mescompte.com"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6005737; classtype:social-engineering; sid:6005737; rev:1; metadata: signature_severity Major, created_et 2026_05_23;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (shorturl.asia/8iEGW)"; flow:established,to_server; http.uri; content:"/8iEGW"; startswith; fast_pattern; http.host; content:"shorturl.asia"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6005738; classtype:social-engineering; sid:6005738; rev:1; metadata: signature_severity Major, created_et 2026_05_23;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (schaengold.com/cgi-sys/suspendedpage.cgi)"; flow:established,to_server; http.uri; content:"/cgi-sys/suspendedpage.cgi"; startswith; fast_pattern; http.host; content:"schaengold.com"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6005739; classtype:social-engineering; sid:6005739; rev:1; metadata: signature_severity Major, created_et 2026_05_23;)
+alert http $HOME_NET any -> any any (msg:"AT related malicious URL (searchdestatus.com/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"searchdestatus.com"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6005740; classtype:social-engineering; sid:6005740; rev:1; metadata: signature_severity Major, created_et 2026_05_23;)
