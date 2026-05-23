@@ -1,6 +1,6 @@
 # Suricata Antiphishing rules
 # Created by github.com/julioliraup/Antiphishing
-# Last updated: 2026-05-23 06:33:47 GMT-0300
+# Last updated: 2026-05-23 07:34:13 GMT-0300
 # SID range: 6000000-6100000
 #
 alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)
@@ -5741,3 +5741,4 @@ alert http $HOME_NET any -> any any (msg:"AT related malicious URL (votrepeageul
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (wordpress-211839-0.cloudclusters.net/wp-content/uploads/2026/05/bla/login.php)"; flow:established,to_server; http.uri; content:"/wp-content/uploads/2026/05/bla/login.php"; startswith; fast_pattern; http.host; content:"wordpress-211839-0.cloudclusters.net"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6005736; classtype:social-engineering; sid:6005736; rev:1; metadata: signature_severity Major, created_et 2026_05_23;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (ameli-mescompte.com/?useremail=)"; flow:established,to_server; http.uri; content:"/?useremail="; startswith; fast_pattern; http.host; content:"ameli-mescompte.com"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6005737; classtype:social-engineering; sid:6005737; rev:1; metadata: signature_severity Major, created_et 2026_05_23;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (shorturl.asia/8iEGW)"; flow:established,to_server; http.uri; content:"/8iEGW"; startswith; fast_pattern; http.host; content:"shorturl.asia"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6005738; classtype:social-engineering; sid:6005738; rev:1; metadata: signature_severity Major, created_et 2026_05_23;)
+alert http $HOME_NET any -> any any (msg:"AT related malicious URL (schaengold.com/cgi-sys/suspendedpage.cgi)"; flow:established,to_server; http.uri; content:"/cgi-sys/suspendedpage.cgi"; startswith; fast_pattern; http.host; content:"schaengold.com"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/ET/signature.html?sid=6005739; classtype:social-engineering; sid:6005739; rev:1; metadata: signature_severity Major, created_et 2026_05_23;)
