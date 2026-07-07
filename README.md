@@ -9,9 +9,17 @@ Our sources:
 1. [Phishstats](https://phishstats.info)
 2. [Openphish](https://openphish.com/)
 
-# Use
-After download `antiphishing.rules` and `phishing.lst` move for `/etc/suricata` or you directory rulesets.
-Now restart suricata daemon.
+Contribution: [CONTRIBUTION.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTION.md)
+
+# Installation guide
+<a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux">
+    <img height="100" alt="Configuration-Ruleset-on-GNU-Linux" src="https://github.com/user-attachments/assets/859b9e29-a650-48b2-968c-628e8c345b5b" />
+</a>
+<a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-pfSense">
+    <img height="100" alt="Configuration-Ruleset-on-pfSense" src="https://github.com/user-attachments/assets/55fcc78d-af99-4e7f-9022-75b644f3c497" />
+</a>
+
+
 
 # Updates
 Our rule updates frequently and includes SIDs that take other rulesets into consideration. Range: 6000000 - 6100000
