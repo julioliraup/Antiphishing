@@ -1,4 +1,8 @@
 ![Antiphishing logo](img/antiphishing.png)
+
+[ 
+[DONATE](https://github.com/julioliraup/Antiphishing#how-to-donate) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT)
+]
 > Protect against phishing attacks
 
 # Functionality
@@ -14,6 +18,7 @@ Contribution: [CONTRIBUTION.md](https://github.com/julioliraup/Antiphishing/blob
 # Installation guide
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux">
     <img height="100" alt="Configuration-Ruleset-on-GNU-Linux" src="https://github.com/user-attachments/assets/859b9e29-a650-48b2-968c-628e8c345b5b" />
+    <img height="100" alt="Configuration-Ruleset-on-cearos" src="https://github.com/user-attachments/assets/083098a4-64b9-4c29-994d-75dcd61fa695" />
 </a>
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-pfSense">
     <img height="100" alt="Configuration-Ruleset-on-pfSense" src="https://github.com/user-attachments/assets/55fcc78d-af99-4e7f-9022-75b644f3c497" />
