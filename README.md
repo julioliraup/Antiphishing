@@ -24,7 +24,10 @@ Contribution: [CONTRIBUTION.md](https://github.com/julioliraup/Antiphishing/blob
     <img height="100" alt="Configuration-Ruleset-on-pfSense" src="https://github.com/user-attachments/assets/55fcc78d-af99-4e7f-9022-75b644f3c497" />
 </a>
 
+## Upcoming Guides
 
+<img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/>
+<img height="100" alt="OPNsense  julioliraup/antiphishing ruleset on Suricata" src="https://github.com/user-attachments/assets/551b04de-b34c-4856-85b7-1928639bc6ec" />
 
 # Updates
 Our rule updates frequently and includes SIDs that take other rulesets into consideration. Range: 6000000 - 6100000
