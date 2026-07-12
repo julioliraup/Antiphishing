@@ -29,20 +29,34 @@ Contribution: [CONTRIBUTION.md](https://github.com/julioliraup/Antiphishing/blob
 <img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/>
 <img height="100" alt="OPNsense  julioliraup/antiphishing ruleset on Suricata" src="https://github.com/user-attachments/assets/551b04de-b34c-4856-85b7-1928639bc6ec" />
 
-# Updates
-Our rule updates frequently and includes SIDs that take other rulesets into consideration. Range: 6000000 - 6100000
-
-### How to Donate
-Currently, we lack the dedicated servers required to generate these rules. Additionally, our lookup portal—[/julioliraup/AT](/julioliraup/AT)—which could enhance our threat intelligence data, faces performance limitations due to a lack of resources for active software licenses.
-
-You can support us directly via PIX (Brazil):
-
-- **PIX Key**: `08650081401`
-
-### Contact
-
-If you have any questions, suggestions, or would like to discuss other ways to collaborate, please feel free to reach out via email:
-- **Email**: [jul10l1r4@disroot.org](mailto:jul10l1r4@disroot.org)
+# Updates & Automation
+Our ruleset is updated dynamically every ~6 hours to track emerging phishing vectors. 
+- **SID Range:** `6000000` - `6100000` (Carefully assigned to prevent conflicts with other [rulesets](https://sidallocation.org/))  .
+- **Format:** Fully compatible with `suricata-update`.
 
 ---
-*Thank you for supporting open-source security!*
+
+## 🛡️ Enterprise Support & Funding
+
+This project is open-source and free for both personal and commercial use. To maintain high-availability infrastructure, automated collection pipelines, and our Threat Intelligence Lookup Portal ([/AT](https://julioliraup.github.io/AT)), we rely on community and corporate funding.
+
+### Why Sponsor?
+* **Infrastructure Sustainability:** Funds go directly toward dedicated servers for rule generation and processing licenses.
+* **Corporate Visibility:** Companies contributing above a certain threshold can feature their logo in this README.
+
+#### 🇧🇷 Donation via PIX (Brazil)
+You can support the project instantly via PIX:
+* **PIX Key:** `08650081401`
+* **Beneficiary:** Júlio Lira
+
+#### 🌐 International Backers
+For recurring sponsorship, priority support, or international donations, please check our [FUNDING.md](./FUNDING.md) or use the **Sponsor** button at the top of this repository.
+
+---
+
+## Contact & False Positives
+
+If you encounter any false positives, have suggestions, or want to discuss corporate partnerships:
+- **Email:** [jul10l1r4@disroot.org](mailto:jul10l1r4@disroot.org)
+- **Issues:** Please open a GitHub Issue for rule adjustments.
+
