@@ -1,3 +1,4 @@
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/julioliraup/Antiphishing) - ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/julioliraup/Antiphishing)
 ![Antiphishing logo](img/antiphishing.png)
 
 [ 
