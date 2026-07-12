@@ -1,7 +1,7 @@
 ![Antiphishing logo](img/antiphishing.png)
 
 [ 
-[DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT)
+[DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT) - [CONTRIBUTING](./CONTRIBUTING.md) - [WIKI](/julioliraup/Antiphishing/wiki)
 ]
 > Protect against phishing attacks
 
@@ -13,7 +13,7 @@ Our sources:
 1. [Phishstats](https://phishstats.info)
 2. [Openphish](https://openphish.com/)
 
-Contribution: [CONTRIBUTION.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTION.md)
+Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTION.md)
 
 # Installation guide
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux">
