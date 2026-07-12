@@ -1,7 +1,7 @@
 ![Antiphishing logo](img/antiphishing.png)
 
 [ 
-[DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT)
+[DONATE](./.github/FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT)
 ]
 > Protect against phishing attacks
 
@@ -50,7 +50,7 @@ You can support the project instantly via PIX:
 * **Beneficiary:** Júlio Lira
 
 #### 🌐 International Backers
-For recurring sponsorship, priority support, or international donations, please check our [FUNDING.md](./FUNDING.md) or use the **Sponsor** button at the top of this repository.
+For recurring sponsorship, priority support, or international donations, please check our [FUNDING.md](./.github/FUNDING.md) or use the **Sponsor** button at the top of this repository.
 
 ---
 
