@@ -1,7 +1,7 @@
 ![Antiphishing logo](img/antiphishing.png)
 
 [ 
-[DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT) - [CONTRIBUTING](./CONTRIBUTING.md) - [WIKI](/julioliraup/Antiphishing/wiki)
+[DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT) - [CONTRIBUTING](./CONTRIBUTING.md) - [WIKI](/julioliraup/Antiphishing/wiki) - [Submit a phishing](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22)
 ]
 > Protect against phishing attacks
 
