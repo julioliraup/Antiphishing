@@ -1,7 +1,7 @@
 ![Antiphishing logo](img/antiphishing.png)
 
 [ 
-[DONATE](https://github.com/julioliraup/Antiphishing#how-to-donate) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT)
+[DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT)
 ]
 > Protect against phishing attacks
 
