@@ -37,10 +37,37 @@ jobs:
           echo "tls=$TLS" >> $GITHUB_OUTPUT
           echo "dns=$DNS" >> $GITHUB_OUTPUT
           echo "vectors=$LINES" >> $GITHUB_OUTPUT
-      - name: Compute total rule count
-        id: total
-        run: |
-          echo "total=$(( ${{ steps.counts.outputs.http }} + ${{ steps.counts.outputs.tls }} + ${{ steps.counts.outputs.dns }} ))" >> $GITHUB_OUTPUT
+      - name: Compute TLD counts
+  id: tld_counts
+  run: |
+    python3 - <<'PY'
+    import base64, collections, os
+    tld_counts = collections.Counter()
+    if os.path.isfile('phishing.lst'):
+        with open('phishing.lst') as f:
+            for line in f:
+                line=line.strip()
+                if not line: continue
+                domain=base64.b64decode(line).decode()
+                tld=domain.split('.')[-1].lower()
+                tld_counts[tld]+=1
+    tlds=sorted(tld_counts)
+    header="| Rule Type | Count " + " ".join(f"| {t.upper()} " for t in tlds) + "|"
+    separator="|---|---" + "".join("|---" for _ in tlds) + "|"
+    rows=[]
+    for rt in ['HTTP','TLS','DNS']:
+        rows.append(f"| {rt} | ${{{{ steps.counts.outputs.{rt.lower()} }}}} " + " ".join(f"| {tld_counts.get(t,0)} " for t in tlds) + "|")
+    rows.append(f"| TOTAL | ${{{{ steps.total.outputs.total }}}} " + " ".join(f"| {tld_counts.get(t,0)} " for t in tlds) + "|")
+    table = "\n".join([header, separator] + rows)
+    echo "tld_table<<EOF" >> $GITHUB_OUTPUT
+    echo "$table" >> $GITHUB_OUTPUT
+    echo "EOF" >> $GITHUB_OUTPUT
+    PY
+  shell: bash
+- name: Compute total rule count
+  id: total
+  run: |
+    echo "total=$(( ${{ steps.counts.outputs.http }} + ${{ steps.counts.outputs.tls }} + ${{ steps.counts.outputs.dns }} ))" >> $GITHUB_OUTPUT
 
       
       - name: Set release timestamp
@@ -54,12 +81,12 @@ jobs:
           tag_name: "release-${{ github.run_id }}"
           name: "Release ${{ steps.timestamp.outputs.time }}"
           body: |
-            | Rule Type | Count |
-            |---|---|
-            | HTTP | ${{ steps.counts.outputs.http }} |
-            | TLS | ${{ steps.counts.outputs.tls }} |
-            | DNS | ${{ steps.counts.outputs.dns }} |
-            | TOTAL | ${{ steps.total.outputs.total }} |
+                        | Rule Type | Count | .com | .net | .org |
+            |---|---|---|---|---|
+            | HTTP | ${{ steps.counts.outputs.http }} | N/A | N/A | N/A |
+            | TLS | ${{ steps.counts.outputs.tls }} | N/A | N/A | N/A |
+            | DNS | ${{ steps.counts.outputs.dns }} | N/A | N/A | N/A |
+            | TOTAL | ${{ steps.total.outputs.total }} | N/A | N/A | N/A |
 
             **Vectors added in this commit:** ${{ steps.counts.outputs.vectors }}
 
@@ -67,11 +94,8 @@ jobs:
 
             ![Antiphishing logo](img/antiphishing.png)
 
-            [            [DONATE](./FUNDING.md)
-            [DASHBOARD VECTORS](https://julioliraup.github.io/AT)
-            [CONTRIBUTING](./CONTRIBUTING.md)
-            [WIKI](/julioliraup/Antiphishing/wiki)
-            [SUBMIT A PHISHING VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22)  ]
+            [ [DONATE](/julioliraup/Antiphishing/FUNDING.md) [DASHBOARD VECTORS](https://julioliraup.github.io/AT) [CONTRIBUTING](/julioliraup/Antiphishing/CONTRIBUTING.md) [WIKI](/julioliraup/Antiphishing/wiki) [SUBMIT A PHISHING VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22) ]
+            
             > Protect against phishing attacks
 
             # Functionality
