@@ -56,6 +56,7 @@ jobs:
             | HTTP | ${{ steps.counts.outputs.http }} |
             | TLS | ${{ steps.counts.outputs.tls }} |
             | DNS | ${{ steps.counts.outputs.dns }} |
+            | TOTAL | ${{ steps.counts.outputs.http }} + ${{ steps.counts.outputs.tls }} + ${{ steps.counts.outputs.dns }} |
 
             **Vectors added in this commit:** ${{ steps.counts.outputs.vectors }}
 
@@ -63,8 +64,12 @@ jobs:
 
             ![Antiphishing logo](img/antiphishing.png)
 
-            [ 
-            [DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT) - [CONTRIBUTING](./CONTRIBUTING.md) - [WIKI](/julioliraup/Antiphishing/wiki) - [SUBMIT A PHISHING VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22)
+            [
+            [DONATE](./FUNDING.md)
+            [DASHBOARD VECTORS](https://julioliraup.github.io/AT)
+            [CONTRIBUTING](./CONTRIBUTING.md)
+            [WIKI](/julioliraup/Antiphishing/wiki)
+            [SUBMIT A PHISHING VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22)
             ]
             > Protect against phishing attacks
 
