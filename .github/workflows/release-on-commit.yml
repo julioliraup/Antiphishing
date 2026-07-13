@@ -1,0 +1,79 @@
+name: Release on Commit
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get rule counts
+        id: counts
+        run: |
+          # Read last SID from tracker (assumed to be the total number of SIDs allocated)
+          if [ -f sid_tracker.txt ]; then
+            SID=$(cat sid_tracker.txt)
+          else
+            echo "sid_tracker.txt not found, defaulting SID to 0"
+            SID=0
+          fi
+          # HTTP rules count is total SIDs minus the two DNS/TLS rules
+          HTTP=$((SID - 2))
+          # Count number of lines in phishing.lst (each line represents a vector)
+          if [ -f phishing.lst ]; then
+            LINES=$(wc -l < phishing.lst)
+          else
+            echo "phishing.lst not found, defaulting line count to 0"
+            LINES=0
+          fi
+          TLS=$LINES
+          DNS=$LINES
+          echo "http=$HTTP" >> $GITHUB_OUTPUT
+          echo "tls=$TLS" >> $GITHUB_OUTPUT
+          echo "dns=$DNS" >> $GITHUB_OUTPUT
+          echo "vectors=$LINES" >> $GITHUB_OUTPUT
+
+      
+      - name: Set release timestamp
+        id: timestamp
+        run: |
+          echo "time=$(date -u '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "release-${{ github.run_id }}"
+          name: "Release ${{ steps.timestamp.outputs.time }}"
+          body: |
+            | Rule Type | Count |
+            |---|---|
+            | HTTP | ${{ steps.counts.outputs.http }} |
+            | TLS | ${{ steps.counts.outputs.tls }} |
+            | DNS | ${{ steps.counts.outputs.dns }} |
+
+            **Vectors added in this commit:** ${{ steps.counts.outputs.vectors }}
+
+            ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/julioliraup/Antiphishing) ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/julioliraup/Antiphishing)
+
+            ![Antiphishing logo](img/antiphishing.png)
+
+            [ 
+            [DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT) - [CONTRIBUTING](./CONTRIBUTING.md) - [WIKI](/julioliraup/Antiphishing/wiki) - [SUBMIT A PHISHING VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22)
+            ]
+            > Protect against phishing attacks
+
+            # Functionality
+
+            This rule is built using malicious URLs and domains involved in phishing attacks. We utilize some community APIs to construct these rules, and with them, we create TLS, DNS, and HTTP rules.
+
+            Our sources:
+            1. [Phishstats](https://phishstats.info)
+            2. [Openphish](https://openphish.com/)
+
+            Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTING.md)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
