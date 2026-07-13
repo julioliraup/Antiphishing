@@ -56,7 +56,7 @@ jobs:
             | HTTP | ${{ steps.counts.outputs.http }} |
             | TLS | ${{ steps.counts.outputs.tls }} |
             | DNS | ${{ steps.counts.outputs.dns }} |
-            | TOTAL | ${{ steps.counts.outputs.http }} + ${{ steps.counts.outputs.tls }} + ${{ steps.counts.outputs.dns }} |
+            | TOTAL | ${{ (steps.counts.outputs.http | int) + (steps.counts.outputs.tls | int) + (steps.counts.outputs.dns | int) }} |
 
             **Vectors added in this commit:** ${{ steps.counts.outputs.vectors }}
 
