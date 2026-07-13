@@ -12,7 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
       - name: Get rule counts
         id: counts
         run: |
@@ -38,10 +37,10 @@ jobs:
           echo "tls=$TLS" >> $GITHUB_OUTPUT
           echo "dns=$DNS" >> $GITHUB_OUTPUT
           echo "vectors=$LINES" >> $GITHUB_OUTPUT
-        - name: Compute total rule count
-          id: total
-          run: |
-            echo "total=$(( ${{ steps.counts.outputs.http }} + ${{ steps.counts.outputs.tls }} + ${{ steps.counts.outputs.dns }} ))" >> $GITHUB_OUTPUT
+      - name: Compute total rule count
+        id: total
+        run: |
+          echo "total=$(( ${{ steps.counts.outputs.http }} + ${{ steps.counts.outputs.tls }} + ${{ steps.counts.outputs.dns }} ))" >> $GITHUB_OUTPUT
 
       
       - name: Set release timestamp
@@ -60,7 +59,7 @@ jobs:
             | HTTP | ${{ steps.counts.outputs.http }} |
             | TLS | ${{ steps.counts.outputs.tls }} |
             | DNS | ${{ steps.counts.outputs.dns }} |
-            | TOTAL | ${{ steps.counts.outputs.http + steps.counts.outputs.tls + steps.counts.outputs.dns }} |
+            | TOTAL | ${{ steps.total.outputs.total }} |
 
             **Vectors added in this commit:** ${{ steps.counts.outputs.vectors }}
 
