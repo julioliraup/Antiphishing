@@ -54,7 +54,7 @@ jobs:
           tag_name: "release-${{ github.run_id }}"
           name: "Release ${{ steps.timestamp.outputs.time }}"
           body: |
-            | Rule Type | Count |
+            | Rule type | Number of rules |
             |---|---|
             | HTTP | ${{ steps.counts.outputs.http }} |
             | TLS | ${{ steps.counts.outputs.tls }} |
@@ -63,11 +63,11 @@ jobs:
 
             **Vectors added in this commit:** ${{ steps.counts.outputs.vectors }}
 
-            ![Antiphishing logo](i  mg/antiphishing.png)
+            ![Antiphishing logo](img/antiphishing.png)
 
             ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/julioliraup/Antiphishing) ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/julioliraup/Antiphishing)
 
-            [ [ [DONATE](/julioliraup/Antiphishing/FUNDING.md) ] [ [DASHBOARD VECTORS](https://julioliraup.github.io/AT) ] [ [CONTRIBUTING](/julioliraup/Antiphishing/CONTRIBUTING.md) ] [ [WIKI](/julioliraup/Antiphishing/wiki) ] [ [SUBMIT A PHISHING VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22) ] ]
+            [ [ [DONATE] ](/julioliraup/Antiphishing/FUNDING.md) ] [ [DASHBOARD VECTORS] ](https://julioliraup.github.io/AT) [ [CONTRIBUTING] ](/julioliraup/Antiphishing/CONTRIBUTING.md) [ [ [WIKI] ](/julioliraup/Antiphishing/wiki) ] [ [SUBMIT A PHISHING VECTOR] ](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22) ]
             
             > Protect against phishing attacks
 
