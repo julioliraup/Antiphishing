@@ -2,7 +2,7 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/julioliraup/Antiphishing) ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/julioliraup/Antiphishing)
 
 [
-[DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT) - [CONTRIBUTING](./CONTRIBUTING.md) - [SUBMIT A VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22) - [REST API CTI](https://github.com/julioliraup/AT/wiki/REST-API-USE)
+[DONATE](./FUNDING.md) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT) - [CONTRIBUTING](./CONTRIBUTING.md) - [SUBMIT A VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22) - [REST API CTI](https://github.com/julioliraup/AT/wiki/REST-API-USE) - [WIKI](/julioliraup/Antiphishing/wiki)
 ]
 
 > Protect against phishing attacks
