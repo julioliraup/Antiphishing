@@ -59,15 +59,15 @@ jobs:
             | HTTP | ${{ steps.counts.outputs.http }} |
             | TLS | ${{ steps.counts.outputs.tls }} |
             | DNS | ${{ steps.counts.outputs.dns }} |
-            | TOTAL | ${{ steps.total.outputs.total }} |
+            | **TOTAL** | ${{ steps.total.outputs.total }} |
 
             **Vectors added in this commit:** ${{ steps.counts.outputs.vectors }}
 
+            ![Antiphishing logo](i  mg/antiphishing.png)
+
             ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/julioliraup/Antiphishing) ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/julioliraup/Antiphishing)
 
-            ![Antiphishing logo](img/antiphishing.png)
-
-            [ [DONATE](/julioliraup/Antiphishing/FUNDING.md) [DASHBOARD VECTORS](https://julioliraup.github.io/AT) [CONTRIBUTING](/julioliraup/Antiphishing/CONTRIBUTING.md) [WIKI](/julioliraup/Antiphishing/wiki) [SUBMIT A PHISHING VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22) ]
+            [ [ [DONATE](/julioliraup/Antiphishing/FUNDING.md) ] [ [DASHBOARD VECTORS](https://julioliraup.github.io/AT) ] [ [CONTRIBUTING](/julioliraup/Antiphishing/CONTRIBUTING.md) ] [ [WIKI](/julioliraup/Antiphishing/wiki) ] [ [SUBMIT A PHISHING VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22) ] ]
             
             > Protect against phishing attacks
 
@@ -80,5 +80,6 @@ jobs:
             2. [Openphish](https://openphish.com/)
 
             Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTING.md)
+            [![Antiphishing video](https://github.com/user-attachments/assets/6196c602-7bdb-4c8e-8ae7-d6a61c32941a)](https://vimeo.com/1209361457?share=copy&fl=sv&fe=ci)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
