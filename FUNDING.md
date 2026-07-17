@@ -1,3 +1,5 @@
+![Support julioliraup/Antiphishing ruleset project](https://github.com/user-attachments/assets/cb86f916-fe9d-4fa6-a9c7-ae6a97998976)
+
 # Support Julioliraup/Antiphishing
 
 Thank you for considering supporting the development and maintenance of this Suricata antiphishing ruleset! Your contribution helps keep corporate and home networks secure worldwide.
