@@ -1,4 +1,4 @@
-![Support julioliraup/Antiphishing ruleset project](https://github.com/user-attachments/assets/cb86f916-fe9d-4fa6-a9c7-ae6a97998976)
+![Support julioliraup/Antiphishing ruleset project](https://github.com/user-attachments/assets/11c01ef8-7e2d-4287-be08-0f51b4bbc3b3)
 
 # Support Julioliraup/Antiphishing
 
