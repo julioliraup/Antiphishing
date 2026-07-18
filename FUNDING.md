@@ -19,5 +19,5 @@ Benefits for Corporate Backers:
 - **Tier 5 (Big):** Logo placement + direct channel via email or priority support regarding false positives or custom rule requests + Post in: Release, Linkedin, Groups and Readme
 
 To arrange a corporate sponsorship or request an invoice/receipt, please contact:
-📩 **jul10l1r4@disroot.org** - [Donate 💙](https://github.com/sponsors/julioliraup)
+📩 **jul10l1r4@disroot.org** - Or contribute with [Github sponsor 💙](https://github.com/sponsors/julioliraup)
 
