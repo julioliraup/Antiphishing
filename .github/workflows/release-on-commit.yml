@@ -85,6 +85,6 @@ jobs:
 
             Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTING.md)
 
-            [![Antiphishing video](https://github.com/user-attachments/assets/6196c602-7bdb-4c8e-8ae7-d6a61c32941a)](https://vimeo.com/1209361457?share=copy&fl=sv&fe=ci)
+            ![Antiphishing video](https://github.com/user-attachments/assets/32c89d48-f88c-4983-86ff-a17b8d6dcbd9)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
