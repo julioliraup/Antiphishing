@@ -49,10 +49,14 @@ jobs:
           echo "time=$(date -u '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: "release-${{ github.run_id }}"
           name: "Release ${{ steps.timestamp.outputs.time }}"
+          files: |
+            antiphishing.tar.gz
+            antiphishing.rules
+            antiphishing.rules.md5
           body: |
             | Rule type | Number of rules | Documentation |
             |---|---|---|
