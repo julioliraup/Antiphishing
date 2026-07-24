@@ -86,5 +86,17 @@ jobs:
             Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTING.md)
 
             ![Antiphishing video](https://github.com/user-attachments/assets/32c89d48-f88c-4983-86ff-a17b8d6dcbd9)
+            
+            # General info
+            The ruleset is the `antiphishing.rules` file, which contains two rules (TLS, DNS) that depend on a `phishing.lst` list. Finally, there is another file named `antiphishing.rules.md5` for integrity verification. We provide a compressed file containing these mentioned files, which are constantly updated without changing the URL (tar.gz):
+
+          ```
+          https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz
+          ```
+          Dot rules file:
+
+          ```
+          https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules
+          ```
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

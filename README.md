@@ -31,6 +31,18 @@ Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob
     <img height="90" alt="Configuration: Antiphishing Ruleset on IDSTower" src="https://github.com/user-attachments/assets/1044e7a6-13fa-48f4-bbfc-1a7662f5afd0" />
   </a>
 
+# General info
+The ruleset is the `antiphishing.rules` file, which contains two rules (TLS, DNS) that depend on a `phishing.lst` list. Finally, there is another file named `antiphishing.rules.md5` for integrity verification. We provide a compressed file containing these mentioned files, which are constantly updated without changing the URL (tar.gz):
+
+```
+https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz
+```
+Dot rules file:
+
+```
+https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules
+```
+
 ## Upcoming Guides
 
 <img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/>
