@@ -1,6 +1,6 @@
 # Suricata Antiphishing rules
 # Created by github.com/julioliraup/Antiphishing
-# Last updated: 2026-07-27 16:32:43 GMT-0300
+# Last updated: 2026-07-27 16:37:26 GMT-0300
 # SID range: 6000000-6100000
 #
 alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)
@@ -24946,3 +24946,4 @@ alert http $HOME_NET any -> any any (msg:"AT related malicious URL (www.facebook
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (malxisk.us.cc/5g/home.html)"; flow:established,to_server; http.uri; content:"/5g/home.html"; startswith; fast_pattern; http.host; content:"malxisk.us.cc"; endswith; reference:url,openphish.com; reference:url,julioliraup.github.io/AT/signature.html?sid=6024941; classtype:social-engineering; sid:6024941; rev:1; metadata: signature_severity Major, created_et 2026_07_27;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (chezipolitebeachclub.hostel.town/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"chezipolitebeachclub.hostel.town"; endswith; reference:url,openphish.com; reference:url,julioliraup.github.io/AT/signature.html?sid=6024942; classtype:social-engineering; sid:6024942; rev:1; metadata: signature_severity Major, created_et 2026_07_27;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (live-swisscom.firebaseapp.com/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"live-swisscom.firebaseapp.com"; endswith; reference:url,openphish.com; reference:url,julioliraup.github.io/AT/signature.html?sid=6024943; classtype:social-engineering; sid:6024943; rev:1; metadata: signature_severity Major, created_et 2026_07_27;)
+alert http $HOME_NET any -> any any (msg:"AT related malicious URL (parastesintago.club/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"parastesintago.club"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/AT/signature.html?sid=6024944; classtype:social-engineering; sid:6024944; rev:1; metadata: signature_severity Major, created_et 2026_07_27;)
