@@ -2,12 +2,18 @@ import requests
 from datetime import datetime
 from base64 import b64encode
 import hashlib
+import sys
+import json
+import os
+import re
 
 phishstats_url = "https://api.phishstats.info/api/phishing?_sort=-id"
 openphish_url = "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt"
+index_json_url = "https://julioliraup.github.io/AT/db/index.json"
 output_file = "antiphishing.rules"
 phishing_list = "phishing.lst"
 sid_file = "sid_tracker.txt"
+index_file = "index.json"
 
 banner = """\033[32m
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -115,7 +121,111 @@ def create_suricata_rules(urls, reference, last_sid, existing_rules):
     print()  # Quebra a linha após o loop
     return rules, sid
 
+def update_from_index():
+    print(banner)
+    print(f"\nFetching index.json from {index_json_url}...")
+    response = requests.get(index_json_url)
+    if response.status_code == 200:
+        with open(index_file, "w") as f:
+            f.write(response.text)
+    else:
+        raise Exception(f"Failed to fetch index: {response.status_code}")
+
+    with open(index_file, "r") as f:
+        data = json.load(f)
+
+    try:
+        with open(output_file, "r") as f:
+            existing_rules = f.readlines()
+    except FileNotFoundError:
+        existing_rules = []
+
+    rules_by_sid = {}
+    rules_by_msg = {}
+    for rule in existing_rules:
+        if not rule.startswith("alert http"):
+            continue
+        m_sid = re.search(r"sid:(\d+);", rule)
+        if m_sid:
+            rules_by_sid[int(m_sid.group(1))] = rule
+        m_msg = re.search(r'msg:"([^"]+)";', rule)
+        if m_msg:
+            rules_by_msg[m_msg.group(1)] = rule
+
+    active_items = [item for item in data if item.get("rule_status") == "active" and item.get("protocol") == "http"]
+    total = len(active_items)
+
+    rules = []
+    sid = 6000002
+
+    for i, item in enumerate(active_items, 1):
+        item_sid = item.get("sid")
+        msg = item.get("name", "")
+        print(f"\r\033[K[{i}/{total}] Processing active rule: {msg[:60]}", end="")
+
+        rule_str = rules_by_sid.get(item_sid) or rules_by_msg.get(msg)
+        if rule_str:
+            rule_str = re.sub(r"sid:\d+;", f"sid:{sid};", rule_str)
+            rule_str = re.sub(r"signature\.html\?sid=\d+", f"signature.html?sid={sid}", rule_str)
+        else:
+            m = re.match(r"^AT related malicious URL \((.*)\)$", msg)
+            if m:
+                new_phish_url = m.group(1)
+                phish_url = new_phish_url.replace(" .", ".").replace(r"\;", ";")
+                if "/" in phish_url:
+                    domain = phish_url.split("/")[0]
+                    path = phish_url.split(domain, 1)[1].replace(";", "|3b|")
+                else:
+                    domain = phish_url
+                    path = "/"
+                current_data = datetime.now().strftime("%Y_%m_%d")
+                rule_str = f'alert http $HOME_NET any -> any any (msg:"AT related malicious URL ({new_phish_url})"; flow:established,to_server; http.uri; content:"{path}"; startswith; fast_pattern; http.host; content:"{domain.lower()}"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/AT/signature.html?sid={sid}; classtype:social-engineering; sid:{sid}; rev:1; metadata: signature_severity Major, created_et {current_data};)\n'
+            else:
+                continue
+
+        rules.append(rule_str)
+        sid += 1
+
+    print()
+
+    domain_rule = 'alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n\nalert tls $HOME_NET any -> any any (msg:"AT TLS SNI to suspicious domain - Phishing"; tls.sni; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; reference:url,julioliraup.github.io/AT/signature.html?sid=6000001; classtype:social-engineering; sid:6000001; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n'
+
+    current_time = datetime.now()
+    gmt_offset = current_time.astimezone().strftime('%z')
+    formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    header = f"""# Suricata Antiphishing rules
+# Created by github.com/julioliraup/Antiphishing
+# Last updated: {formatted_time} GMT{gmt_offset}
+# SID range: 6000000-6100000
+#
+"""
+
+    all_rules = [header, domain_rule] + rules
+
+    with open(output_file, "w") as f:
+        for rule in all_rules:
+            f.write(rule)
+
+    with open(output_file + ".md5", "w") as f:
+        md5_hash = hashlib.md5(open(output_file, "rb").read()).hexdigest()
+        f.write(md5_hash + "\n")
+
+    with open(sid_file, "w") as f:
+        f.write(str(sid))
+
+    if os.path.exists(index_file):
+        os.remove(index_file)
+
+    print(f"Rulesets updated: {output_file}")
+    if sid > 6100000:
+        print("WARNING: SID range exceeded 6100000. Please consider adjusting the SID range.")
+
 def main():
+    if "--update" in sys.argv:
+        update_from_index()
+        return
+
     print(banner)
     print("\nStarting Antiphishing Update...\n")
     # Lê as regras existentes
