@@ -157,6 +157,8 @@ def update_from_index():
 
     rules = []
     sid = 6000002
+    seen_hosts = {}   # host -> primeiro SID que o registrou
+    duplicates_skipped = 0
 
     for i, item in enumerate(active_items, 1):
         item_sid = item.get("sid")
@@ -183,10 +185,23 @@ def update_from_index():
             else:
                 continue
 
+        # --- deduplicação por http.host ---
+        m_host = re.search(r'http\.host; content:"([^"]+)"', rule_str)
+        if m_host:
+            host = m_host.group(1).lower()
+            if host in seen_hosts:
+                duplicates_skipped += 1
+                print(f"\r\033[K  [SKIP] Duplicate host '{host}' (already mapped to SID {seen_hosts[host]}, current item SID {item_sid})")
+                continue
+            seen_hosts[host] = sid
+        # ----------------------------------
+
         rules.append(rule_str)
         sid += 1
 
     print()
+    if duplicates_skipped:
+        print(f"Deduplication: {duplicates_skipped} rule(s) removed (same http.host already present).")
 
     domain_rule = 'alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n\nalert tls $HOME_NET any -> any any (msg:"AT TLS SNI to suspicious domain - Phishing"; tls.sni; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; reference:url,julioliraup.github.io/AT/signature.html?sid=6000001; classtype:social-engineering; sid:6000001; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n'
 
