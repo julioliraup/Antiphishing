@@ -236,7 +236,19 @@ def main():
         existing_rules = []
 
     last_sid = get_last_sid()
-    
+
+    # Filtra as regras antigas para manter apenas as regras HTTP (removendo cabeçalhos e a regra DNS antiga)
+    old_rules = [r for r in existing_rules if r.strip().startswith("alert http")]
+
+    # Constrói índice de (host, path) das regras antigas para deduplicação
+    # Isso impede que execuções normais após um --update recriem regras já existentes com SIDs novos
+    existing_keys = set()
+    for rule in old_rules:
+        m_host = re.search(r'http\.host; content:"([^"]+)"', rule)
+        m_path = re.search(r'http\.uri; content:"([^"]+)"', rule)
+        if m_host and m_path:
+            existing_keys.add((m_host.group(1), m_path.group(1)))
+
     # Cria novas regras
     print(f"Fetching URLs from {phishstats_url}...")
     phishstats_urls = fetch_phishing_urls(phishstats_url)
@@ -270,11 +282,24 @@ def main():
 #
 """
 
-    # Filtra as regras antigas para manter apenas as regras HTTP (removendo cabeçalhos e a regra DNS antiga)
-    old_rules = [r for r in existing_rules if r.strip().startswith("alert http")]
+    # Remove das novas regras qualquer (host, path) que já exista nas antigas,
+    # evitando duplicatas após um --update que renumerou os SIDs
+    def is_new_rule_unique(rule):
+        m_host = re.search(r'http\.host; content:"([^"]+)"', rule)
+        m_path = re.search(r'http\.uri; content:"([^"]+)"', rule)
+        if m_host and m_path:
+            return (m_host.group(1), m_path.group(1)) not in existing_keys
+        return True
+
+    unique_phishstats = [r for r in phishstats if is_new_rule_unique(r)]
+    unique_openphish  = [r for r in openphish  if is_new_rule_unique(r)]
+
+    removed = len(phishstats) + len(openphish) - len(unique_phishstats) - len(unique_openphish)
+    if removed:
+        print(f"Deduplication: {removed} rule(s) skipped (domain+path already in existing rules).")
 
     # Combina todas as regras
-    all_rules = [header, domain_rule] + old_rules + phishstats + openphish
+    all_rules = [header, domain_rule] + old_rules + unique_phishstats + unique_openphish
 
     # Escreve as regras no arquivo
     with open(output_file, "w") as f:
