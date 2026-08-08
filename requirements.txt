@@ -1,1 +1,3 @@
-requests>=2.31.0 
+requests>=2.31.0
+dnstwist>=20240101
+tldextract>=5.1.0
