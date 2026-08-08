@@ -6,6 +6,7 @@ import sys
 import json
 import os
 import re
+from nrd_processor import process_nrd_list
 
 phishstats_url = "https://api.phishstats.info/api/phishing?_sort=-id"
 openphish_url = "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt"
@@ -243,6 +244,8 @@ def main():
 
     print(banner)
     print("\nStarting Antiphishing Update...\n")
+
+    process_nrd_list()
     # Lê as regras existentes
     try:
         with open(output_file, "r") as f:
