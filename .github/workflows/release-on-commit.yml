@@ -31,12 +31,20 @@ jobs:
             echo "phishing.lst not found, defaulting line count to 0"
             LINES=0
           fi
+          # Count number of suspicious NRD domains analyzed
+          if [ -f nrd_suspicious_domains.txt ]; then
+            NRD=$(grep -c -v '^[[:space:]]*$' nrd_suspicious_domains.txt || echo 0)
+          else
+            echo "nrd_suspicious_domains.txt not found, defaulting NRD count to 0"
+            NRD=0
+          fi
           TLS=$LINES
           DNS=$LINES
           echo "http=$HTTP" >> $GITHUB_OUTPUT
           echo "tls=$TLS" >> $GITHUB_OUTPUT
           echo "dns=$DNS" >> $GITHUB_OUTPUT
           echo "vectors=$LINES" >> $GITHUB_OUTPUT
+          echo "nrd=$NRD" >> $GITHUB_OUTPUT
       - name: Compute total rule count
         id: total
         run: |
@@ -57,15 +65,18 @@ jobs:
             antiphishing.tar.gz
             antiphishing.rules
             antiphishing.rules.md5
+            nrd_suspicious_domains.txt
           body: |
-            | Rule type | Number of rules | Documentation |
+            | Rule / Intel Type | Count | Documentation |
             |---|---|---|
-            | HTTP | ${{ steps.counts.outputs.http }} | [HTTP Keywords](https://docs.suricata.io/en/latest/rules/http-keywords.html) |
-            | TLS | ${{ steps.counts.outputs.tls }} | [SSL/TLS Keywords](https://docs.suricata.io/en/latest/rules/tls-keywords.html) |
-            | DNS | ${{ steps.counts.outputs.dns }} | [DNS Keywords](https://docs.suricata.io/en/latest/rules/dns-keywords.html) |
-            | **TOTAL** | **${{ steps.total.outputs.total }}** |
+            | HTTP Rules | ${{ steps.counts.outputs.http }} | [HTTP Keywords](https://docs.suricata.io/en/latest/rules/http-keywords.html) |
+            | TLS Rules | ${{ steps.counts.outputs.tls }} | [SSL/TLS Keywords](https://docs.suricata.io/en/latest/rules/tls-keywords.html) |
+            | DNS Rules | ${{ steps.counts.outputs.dns }} | [DNS Keywords](https://docs.suricata.io/en/latest/rules/dns-keywords.html) |
+            | Suspicious NRD Domains | ${{ steps.counts.outputs.nrd }} | [NRD Intelligence](#-newly-registered-domains-nrd-threat-intelligence) |
+            | **TOTAL SURICATA RULES** | **${{ steps.total.outputs.total }}** | |
 
-            **Vectors added in this commit:** ${{ steps.counts.outputs.vectors }}
+            **Total Malicious Vectors (Base64 Dataset):** ${{ steps.counts.outputs.vectors }}  
+            **Total Suspicious NRD Domains Identified:** ${{ steps.counts.outputs.nrd }}
 
             ![Antiphishing logo](img/antiphishing.png)
 
@@ -75,6 +86,15 @@ jobs:
 
             > Protect against phishing attacks
 
+            # 🛡️ Newly Registered Domains (NRD) Threat Intelligence
+
+            Our automated pipeline performs continuous analysis on Newly Registered Domains (NRDs), combining **dnstwist** domain fuzzing permutations with multi-language keyword inspection (covering top global brands across banking, e-commerce, cloud, and social media).
+
+            ### 🚀 How to Maximize the Value of NRD Intelligence:
+            - **Preemptive Proactive Defense:** Threat actors routinely register domains days or weeks before launching phishing campaigns. Identifying suspicious NRDs early blocks attack vectors *before* emails or links hit target users.
+            - **Native Suricata Integration:** All identified NRD suspicious domains are automatically converted into Base64 indicators and compiled into `phishing.lst`, giving immediate coverage for both DNS and TLS/SNI traffic.
+            - **Direct CTI Feed Consumption:** Security teams can directly ingest `nrd_suspicious_domains.txt` into SIEMs, SOAR playbooks, firewalls, or DNS sinkholes (e.g. Pi-hole, Unbound, AdGuard) for zero-day domain blocking.
+
             # Functionality
 
             This rule is built using malicious URLs and domains involved in phishing attacks. We utilize some community APIs to construct these rules, and with them, we create TLS, DNS, and HTTP rules.
@@ -82,6 +102,7 @@ jobs:
             Our sources:
             1. [Phishstats](https://phishstats.info)
             2. [Openphish](https://openphish.com/)
+            3. [cbuijs NRD Feed](https://github.com/cbuijs/nrd) (Analyzed via dnstwist & brand keyword engine)
 
             Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTING.md)
 
@@ -97,6 +118,12 @@ jobs:
 
             ```
             https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules
+            ```
+
+            Suspicious NRD List:
+
+            ```
+            https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/nrd_suspicious_domains.txt
             ```
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
