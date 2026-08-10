@@ -9,13 +9,14 @@
 
 # Functionality
 
-This rule is built using malicious URLs and domains involved in phishing attacks. We utilize some community APIs to construct these rules, and with them, we create TLS, DNS, and HTTP rules.
+This rule is built using malicious URLs and domains involved in phishing attacks. We utilize some community APIs and NRD (Newly Registered Domain) to construct these rules, and with them, we create TLS, DNS, and HTTP rules.
 
 Our sources:
 1. [Phishstats](https://phishstats.info)
 2. [Openphish](https://openphish.com/)
+3. [cbuijs/nrd](https://github.com/cbuijs/nrd) — Newly Registered Domain intelligence
 
-Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTION.md)
+Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTING.md)
 
 # Installation guide
   <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux">
@@ -41,6 +42,31 @@ Dot rules file:
 
 ```
 https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules
+```
+
+# 🛡️ NRD Threat Intelligence
+
+Antiphishing now includes a **Newly Registered Domains (NRD)** analysis layer focused on proactive phishing infrastructure detection.
+
+The pipeline analyzes newly registered domains with observed DNS resolution/activity through public recursive DNS resolvers, including:
+
+- `8.8.8.8` — Google Public DNS
+- `1.1.1.1` — Cloudflare DNS
+
+The analysis generates **more than 1.5 million possible domain combinations** for inspection, using techniques associated with:
+
+- Typosquatting
+- Homoglyph detection
+- Brand impersonation
+- High-risk phishing terminology
+
+The generated combinations are analyzed to identify domains that present suspicious characteristics.
+
+Domains classified as suspicious by the analysis pipeline are automatically incorporated into the Antiphishing intelligence dataset and can become detection indicators for **DNS and TLS/SNI traffic in Suricata**.
+
+Antiphishing Threat Intel are added to the file:" ou "The CRMs are added to the file:
+```
+nrd_suspicious_domains.txt
 ```
 
 ## Upcoming Guides
