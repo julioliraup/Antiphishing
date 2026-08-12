@@ -69,6 +69,8 @@ Antiphishing Threat Intel are added to the file:" ou "The CRMs are added to the 
 nrd_suspicious_domains.txt
 ```
 
+Obs.: **NRD threat intelligence rules consider the domains suspicious; there is no validated confirmation that they are malicious, otherwise there is a high chance of false positives.**
+
 ## Upcoming Guides
 
 <img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/>
