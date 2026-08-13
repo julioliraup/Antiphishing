@@ -14,7 +14,7 @@ This rule is built using malicious URLs and domains involved in phishing attacks
 Our sources:
 1. [Phishstats](https://phishstats.info)
 2. [Openphish](https://openphish.com/)
-3. [cbuijs/nrd](https://github.com/cbuijs/nrd) — Newly Registered Domain intelligence
+3. [cbuijs/nrd](https://github.com/cbuijs/nrd) — Newly Registered Domain with DNS traffic 
 
 Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTING.md)
 
