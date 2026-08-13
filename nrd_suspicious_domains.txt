@@ -45,3 +45,6 @@ sites-ledger.com
 space-meta.com
 tgr-amazon.com
 wps-telegram.com
+apple-s.com
+tehutehu-apple.com
+zt-apple.com
