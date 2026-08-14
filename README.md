@@ -54,10 +54,7 @@ https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rul
 
 Antiphishing now includes a **Newly Registered Domains (NRD)** analysis layer focused on proactive phishing infrastructure detection.
 
-The pipeline analyzes newly registered domains with observed DNS resolution/activity through public recursive DNS resolvers, including:
-
-- `8.8.8.8` — Google Public DNS
-- `1.1.1.1` — Cloudflare DNS
+The pipeline analyzes newly registered domains with observed DNS resolution/activity through public recursive DNS resolvers.
 
 The analysis generates **more than 1.5 million possible domain combinations** for inspection, using techniques associated with:
 
