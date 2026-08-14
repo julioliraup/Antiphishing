@@ -23,7 +23,7 @@ jobs:
           fi
 
       - name: Submit Pulse to OTX
-        uses: julioliraup/otx-pulse@v1
+        uses: julioliraup/otx-pulse@0.0.1
         with:
           otx-api-key: ${{ secrets.OTX_API_KEY }}
           name: "Suspicious NRD Domains Detected"
