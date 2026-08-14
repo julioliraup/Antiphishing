@@ -16,6 +16,8 @@ Our sources:
 2. [Openphish](https://openphish.com/)
 3. [cbuijs/nrd](https://github.com/cbuijs/nrd) — Newly Registered Domain with DNS traffic 
 
+**Dataset loading:** The DNS and TLS signatures load `phishing.lst` directly through Suricata's dataset keyword. This ensures the phishing domain dataset is self-contained and does not require a separate `suricata.yaml` dataset declaration, which is especially important for packaged deployments such as OPNsense. **After updating `phishing.lst`, the Suricata ruleset must be reloaded for the updated dataset to become active.** See the Suricata documentation for details on dataset loading and rule reload behavior.
+
 Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTING.md)
 
 # Installation guide
