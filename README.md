@@ -41,7 +41,7 @@ Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob
 <img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/>
 
 # General info
-The ruleset is the `antiphishing.rules` file, which contains two rules (TLS, DNS) that depend on a `phishing.lst` list. Finally, there is another file named `antiphishing.rules.md5` for integrity verification. We provide a compressed file containing these mentioned files, which are constantly updated without changing the URL (tar.gz):
+The ruleset is the `antiphishing.rules` file, which contains three dataset rules (DNS, TLS, IP). The DNS and TLS rules depend on a `phishing.lst` list; the IP reputation rule depends on a `phishing_ips.lst` list. Note that `phishing_ips.lst` is a `type ipv4` dataset, so it holds plain-text addresses one per line, unlike `phishing.lst` which is base64-encoded. Finally, there is another file named `antiphishing.rules.md5` for integrity verification. We provide a compressed file containing these mentioned files, which are constantly updated without changing the URL (tar.gz):
 
 ```
 https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz
