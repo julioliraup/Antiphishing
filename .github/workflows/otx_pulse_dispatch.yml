@@ -1,0 +1,42 @@
+name: OTX Pulse Dispatch on Commit
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  dispatch-pulse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare OTX indicators
+        id: indicators
+        run: |
+          # Read the list of suspicious NRD domains and turn each line into a JSON indicator object
+          if [ -f nrd_suspicious_domains.txt ]; then
+            echo "Generating JSON indicators..."
+            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c 'split("\n")[:-1] | map({indicator: ., type: "domain", title: "Suspicious NRD", description: "Potentially malicious newly‑registered domain", role: "phishing_host"})')
+            echo "indicators=$INDICATORS" >> $GITHUB_OUTPUT
+          else
+            echo "indicators=[]" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Submit Pulse to OTX
+        uses: julioliraup/otx-pulse@v1
+        with:
+          otx-api-key: ${{ secrets.OTX_API_KEY }}
+          name: "Suspicious NRD Domains Detected"
+          description: |
+            A set of newly‑registered domains has been flagged as suspicious. There is a chance these are false‑positives, please review before action.
+          public: "false"
+          tlp: "amber"
+          tags: "suspicious, nrd, phishing"
+          references: "https://github.com/julioliraup/Antiphishing"
+          adversary: "Unknown Scanners"
+          targeted-countries: ""
+          industries: ""
+          group-ids: ""
+          malware-families: ""
+          attack-ids: ""
+          indicators: ${{ steps.indicators.outputs.indicators }}
