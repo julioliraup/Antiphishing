@@ -10,61 +10,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Prepare and submit OTX pulse
-        env:
-          OTX_API_KEY: ${{ secrets.OTX_API_KEY }}
+      - name: Prepare OTX indicators
+        id: indicators
         run: |
-          # Bail out early if no API key is configured
-          if [ -z "$OTX_API_KEY" ]; then
-            echo "⚠️  OTX_API_KEY secret is not set — skipping pulse submission."
-            exit 0
-          fi
-
-          # Build the indicators JSON array from nrd_suspicious_domains.txt
           if [ -f nrd_suspicious_domains.txt ]; then
-            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt \
-              | jq -R -s -c 'split("\n")[:-1] | map({
-                  indicator: .,
-                  type: "domain",
-                  title: "Suspicious NRD",
-                  description: "Potentially malicious newly-registered domain",
-                  role: "phishing_host"
-                })')
+            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c 'split("\n")[:-1] | map({indicator: ., type: "domain", title: "Suspicious NRD", description: "Potentially malicious newly-registered domain", role: "phishing_host"})')
+            echo "indicators=$INDICATORS" >> $GITHUB_OUTPUT
           else
-            INDICATORS='[]'
+            echo "indicators=[]" >> $GITHUB_OUTPUT
           fi
 
-          # Build the full pulse payload
-          PAYLOAD=$(jq -n \
-            --arg name "Suspicious NRD Domains Detected" \
-            --arg description "A set of newly-registered domains has been flagged as suspicious by the Antiphishing pipeline. These domains were analyzed for typosquatting and brand desensitization across 14 detection algorithms. There is a chance these are false-positives, please review before action." \
-            --arg tlp "amber" \
-            --arg adversary "Unknown Scanners" \
-            --argjson indicators "$INDICATORS" \
-            '{
-              name: $name,
-              description: $description,
-              public: false,
-              TLP: $tlp,
-              adversary: $adversary,
-              tags: ["suspicious","nrd","phishing","typosquatting"],
-              references: ["https://github.com/julioliraup/Antiphishing"],
-              indicators: $indicators
-            }')
+      - name: Submit Pulse to OTX
+        uses: julioliraup/otx-pulse@main
+        with:
+          otx-api-key: ${{ secrets.OTX_API_KEY }}
+          name: "Suspicious NRD Domains Detected"
+          description: "A set of newly-registered domains has been flagged as suspicious by the Antiphishing pipeline. These domains were analyzed for typosquatting and brand desensitization across 14 detection algorithms. There is a chance these are false-positives, please review before action."
+          public: "false"
+          tlp: "amber"
+          tags: "suspicious,nrd,phishing,typosquatting"
+          references: "https://github.com/julioliraup/Antiphishing"
+          adversary: "Unknown Scanners"
+          indicators: ${{ steps.indicators.outputs.indicators }}
 
-          echo "Submitting pulse to OTX API..."
-          HTTP_STATUS=$(curl -s -o /tmp/otx_response.json -w "%{http_code}" \
-            -X POST "https://otx.alienvault.com/api/v1/pulses/create" \
-            -H "X-OTX-API-KEY: ${OTX_API_KEY}" \
-            -H "Content-Type: application/json" \
-            -d "$PAYLOAD")
-
-          echo "HTTP Status: $HTTP_STATUS"
-          cat /tmp/otx_response.json
-
-          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
-            echo "✅ Pulse submitted successfully."
-          else
-            echo "❌ Pulse submission failed with status $HTTP_STATUS."
-            exit 1
-          fi
