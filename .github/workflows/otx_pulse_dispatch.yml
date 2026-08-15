@@ -22,21 +22,24 @@ jobs:
             echo "indicators=[]" >> $GITHUB_OUTPUT
           fi
 
-      - name: Submit Pulse to OTX
-        uses: julioliraup/otx-pulse@0.0.1
-        with:
-          otx-api-key: ${{ secrets.OTX_API_KEY }}
-          name: "Suspicious NRD Domains Detected"
-          description: |
-            A set of newly‑registered domains has been flagged as suspicious. There is a chance these are false‑positives, please review before action.
-          public: "false"
-          tlp: "amber"
-          tags: "suspicious, nrd, phishing"
-          references: "https://github.com/julioliraup/Antiphishing"
-          adversary: "Unknown Scanners"
-          targeted-countries: ""
-          industries: ""
-          group-ids: ""
-          malware-families: ""
-          attack-ids: ""
-          indicators: ${{ steps.indicators.outputs.indicators }}
+      - name: Submit Pulse to OTX via curl
+        env:
+          OTX_API_KEY: ${{ secrets.OTX_API_KEY }}
+        run: |
+          payload=$(cat <<'EOF'
+          {
+            "name": "Suspicious NRD Domains Detected",
+            "description": "A set of newly‑registered domains has been flagged as suspicious. There is a chance these are false‑positives, please review before action.",
+            "public": false,
+            "tlp": "amber",
+            "tags": ["suspicious","nrd","phishing"],
+            "references": ["https://github.com/julioliraup/Antiphishing"],
+            "adversary": "Unknown Scanners",
+            "indicators": ${{ steps.indicators.outputs.indicators }}
+          }
+          EOF
+          )
+          curl -X POST "https://otx.alienvault.com/api/v1/pulses/" \
+            -H "Content-Type: application/json" \
+            -H "OTX-API-KEY: $OTX_API_KEY" \
+            -d "$payload"
