@@ -13,8 +13,34 @@ openphish_url = "https://raw.githubusercontent.com/openphish/public_feed/refs/he
 index_json_url = "https://julioliraup.github.io/AT/db/index.json"
 output_file = "antiphishing.rules"
 phishing_list = "phishing.lst"
+phishing_ip_list = "phishing_ips.lst"
 sid_file = "sid_tracker.txt"
 index_file = "index.json"
+
+ipv4_pattern = re.compile(r"^(?:\d{1,3}\.){3}\d{1,3}$")
+
+# Regras de dataset (SIDs reservados 6000000-6000002). Definidas em um único
+# lugar para que os dois caminhos de geração não saiam de sincronia.
+dataset_rules = (
+    'alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; '
+    'dns.query; dataset:isset,phishing_domains,type string,load phishing.lst; '
+    'reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; '
+    'sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n'
+    '\n'
+    'alert tls $HOME_NET any -> any any (msg:"AT TLS SNI to suspicious domain - Phishing"; '
+    'tls.sni; dataset:isset,phishing_domains,type string,load phishing.lst; '
+    'reference:url,github.com/julioliraup/Antiphishing; '
+    'reference:url,julioliraup.github.io/AT/signature.html?sid=6000001; '
+    'classtype:social-engineering; sid:6000001; rev:1; '
+    'metadata: signature_severity Major, created_et 2025_02_19;)\n'
+    '\n'
+    'alert ip $HOME_NET any -> any any (msg:"AT IP reputation - Phishing"; '
+    'ip.dst; dataset:isset,phishing_ips,type ipv4,load phishing_ips.lst; '
+    'reference:url,github.com/julioliraup/Antiphishing; '
+    'reference:url,julioliraup.github.io/AT/signature.html?sid=6000002; '
+    'classtype:social-engineering; sid:6000002; rev:1; '
+    'metadata: signature_severity Major, created_et 2026_08_14;)\n'
+)
 
 banner = """\033[32m
 ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
@@ -53,9 +79,9 @@ def get_last_sid():
         with open(sid_file, "r") as f:
             return int(f.read().strip())
     except FileNotFoundError:
-        return 6000001  # Começando de 6000001 pois 6000000 é reservado para regra DNS
+        return 6000003  # 6000000-6000002 reservados para as regras de dataset (DNS, TLS, IP)
     except ValueError:
-        return 6000001
+        return 6000003
 
 def is_domain_in_rules(domain, rules):
     # Verifica se o domínio já existe nas regras HTTP
@@ -73,7 +99,32 @@ def is_domain_in_phishing_list(domain):
     except FileNotFoundError:
         return False
 
+def is_ipv4(value):
+    # Valida o formato e o intervalo de cada octeto
+    if not ipv4_pattern.match(value):
+        return False
+    return all(0 <= int(octet) <= 255 for octet in value.split('.'))
+
+def is_ip_in_phishing_ip_list(ip_address):
+    try:
+        with open(phishing_ip_list, "r") as f:
+            return ip_address + "\n" in f.readlines()
+    except FileNotFoundError:
+        return False
+
+def update_ip_dataset(ip_address):
+    # Datasets do tipo ipv4 usam texto puro, não base64
+    if not is_ip_in_phishing_ip_list(ip_address):
+        with open(phishing_ip_list, "a") as f:
+            f.write(ip_address + "\n")
+
 def update_dataset(domain, rules):
+    # Um literal de IP nunca casa com dns.query nem com tls.sni,
+    # então vai para o dataset ipv4 usado pela regra de reputação
+    if is_ipv4(domain):
+        update_ip_dataset(domain)
+        return
+
     # Verifica se o domínio já existe nas regras ou na lista
     if not is_domain_in_rules(domain, rules) and not is_domain_in_phishing_list(domain):
         with open(phishing_list, "a") as f:
@@ -157,7 +208,7 @@ def update_from_index():
     total = len(active_items)
 
     rules = []
-    sid = 6000002
+    sid = 6000003
     seen_hosts = {}   # host -> primeiro SID que o registrou
     duplicates_skipped = 0
 
@@ -204,7 +255,7 @@ def update_from_index():
     if duplicates_skipped:
         print(f"Deduplication: {duplicates_skipped} rule(s) removed (same http.host already present).")
 
-    domain_rule = 'alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string,load phishing.lst; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n\nalert tls $HOME_NET any -> any any (msg:"AT TLS SNI to suspicious domain - Phishing"; tls.sni; dataset:isset,phishing_domains,type string,load phishing.lst; reference:url,github.com/julioliraup/Antiphishing; reference:url,julioliraup.github.io/AT/signature.html?sid=6000001; classtype:social-engineering; sid:6000001; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n'
+    domain_rule = dataset_rules
 
     current_time = datetime.now()
     gmt_offset = current_time.astimezone().strftime('%z')
@@ -256,7 +307,16 @@ def main():
     last_sid = get_last_sid()
 
     # Filtra as regras antigas para manter apenas as regras HTTP (removendo cabeçalhos e a regra DNS antiga)
-    old_rules = [r for r in existing_rules if r.strip().startswith("alert http")]
+    # Migração única: 6000000-6000002 agora são reservados para as regras de dataset,
+    # então qualquer regra HTTP antiga nessa faixa é renumerada para evitar SID duplicado
+    old_rules = []
+    for rule in (r for r in existing_rules if r.strip().startswith("alert http")):
+        m_old_sid = re.search(r"sid:(\d+);", rule)
+        if m_old_sid and int(m_old_sid.group(1)) <= 6000002:
+            rule = re.sub(r"sid:\d+;", f"sid:{last_sid};", rule)
+            rule = re.sub(r"signature\.html\?sid=\d+", f"signature.html?sid={last_sid}", rule)
+            last_sid += 1
+        old_rules.append(rule)
 
     # Constrói índice de (host, path) das regras antigas para deduplicação
     # Isso impede que execuções normais após um --update recriem regras já existentes com SIDs novos
@@ -287,7 +347,7 @@ def main():
     )
 
     # Mantém a regra DNS fixa e adiciona as novas regras
-    domain_rule = 'alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n\nalert tls $HOME_NET any -> any any (msg:"AT TLS SNI to suspicious domain - Phishing"; tls.sni; dataset:isset,phishing_domains,type string; reference:url,github.com/julioliraup/Antiphishing; reference:url,julioliraup.github.io/AT/signature.html?sid=6000001; classtype:social-engineering; sid:6000001; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n'
+    domain_rule = dataset_rules
     
     current_time = datetime.now()
     gmt_offset = current_time.astimezone().strftime('%z')
