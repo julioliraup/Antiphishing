@@ -69,7 +69,7 @@ The generated combinations are analyzed to identify domains that present suspici
 
 Domains classified as suspicious by the analysis pipeline are automatically incorporated into the Antiphishing intelligence dataset and can become detection indicators for **DNS and TLS/SNI traffic in Suricata**.
 
-Antiphishing Threat Intel are added to the file:" ou "The CRMs are added to the file:
+Antiphishing Threat Intel are added to the file:
 ```
 nrd_suspicious_domains.txt
 ```
@@ -83,21 +83,29 @@ Our ruleset is updated dynamically every ~6 hours to track emerging phishing vec
 
 ---
 
-## 🛡️ Enterprise Support & Funding
+## 🙏 Acknowledgments
 
-This project is open-source and free for both personal and commercial use. To maintain high-availability infrastructure, automated collection pipelines, and our Threat Intelligence Lookup Portal ([/AT](https://julioliraup.github.io/AT)), we rely on community and corporate funding.
+A special and sincere thanks to [@antixmars](https://github.com/antixmars) for their contribution to this project.
+Good work deserves to be recognized — and yours was both timely and valuable. Thank you.
 
-### Why Sponsor?
-* **Infrastructure Sustainability:** Funds go directly toward dedicated servers for rule generation and processing licenses.
-* **Corporate Visibility:** Companies contributing above a certain threshold can feature their logo in this README.
+---
 
-#### 🇧🇷 Donation via PIX (Brazil)
-You can support the project instantly via PIX:
-* **PIX Key:** `08650081401`
-* **Beneficiary:** Júlio Lira
+## 💛 Support This Project
 
-#### 🌐 International Backers
-For recurring sponsorship, priority support, or international donations, please check our [FUNDING.md](./FUNDING.md) or use the **Sponsor** button at the top of this repository.
+This project is maintained by a single person, driven by the belief that effective phishing detection should be accessible to everyone — from homelab enthusiasts to enterprise security teams.
+
+Building and sustaining this kind of threat intelligence infrastructure takes real time and real resources: pipeline maintenance, rule engineering, dataset curation, false positive management, and continuous research into emerging phishing tactics.
+
+If this project has been useful to you — whether it protected a network, helped a student learn, or saved an analyst time — consider supporting it. Even a small contribution makes it possible to keep the lights on.
+
+There is no subscription, no paywall, and no premium tier. Everything here is free. A donation is simply an acknowledgment that this work has value.
+
+#### 🇧🇷 Doação via PIX (Brasil)
+- **Chave PIX:** `08650081401`
+- **Beneficiário:** Júlio Lira
+
+#### 🌐 GitHub Sponsors (International)
+For recurring support or one-time contributions: [github.com/sponsors/julioliraup](https://github.com/sponsors/julioliraup)
 
 ---
 
@@ -106,4 +114,3 @@ For recurring sponsorship, priority support, or international donations, please 
 If you encounter any false positives, have suggestions, or want to discuss corporate partnerships:
 - **Email:** [jul10l1r4@disroot.org](mailto:jul10l1r4@disroot.org)
 - **Issues:** Please open a GitHub Issue for rule adjustments.
-
