@@ -26,10 +26,10 @@ jobs:
           otx-api-key: ${{ secrets.OTX_API_KEY }}
           name: "Suspicious NRD Domains Detected"
           description: "A set of newly-registered domains has been flagged as suspicious by the Antiphishing pipeline. These domains were analyzed for typosquatting and brand desensitization across 14 detection algorithms. There is a chance these are false-positives, please review before action."
-          public: "false"
-          tlp: "amber"
+          public: "true"
+          tlp: "white"
           tags: "suspicious,nrd,phishing,typosquatting"
-          references: "https://github.com/julioliraup/Antiphishing"
+          references: "https://github.com/julioliraup/Antiphishing, https://julioliraup.github.io/AT"
           adversary: "Unknown Scanners"
           indicators: ${{ steps.indicators.outputs.indicators }}
 
