@@ -24,7 +24,8 @@ ipv4_pattern = re.compile(r"^(?:\d{1,3}\.){3}\d{1,3}$")
 dataset_rules = (
     'alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; '
     'dns.query; dataset:isset,phishing_domains,type string,load phishing.lst; '
-    'reference:url,github.com/julioliraup/Antiphishing; classtype:social-engineering; '
+    'reference:url,github.com/julioliraup/Antiphishing; '
+    'reference:url,julioliraup.github.io/AT/signature.html?sid=6000000; classtype:social-engineering; '
     'sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)\n'
     '\n'
     'alert tls $HOME_NET any -> any any (msg:"AT TLS SNI to suspicious domain - Phishing"; '
@@ -34,12 +35,13 @@ dataset_rules = (
     'classtype:social-engineering; sid:6000001; rev:1; '
     'metadata: signature_severity Major, created_et 2025_02_19;)\n'
     '\n'
-    'alert ip $HOME_NET any -> any any (msg:"AT IP reputation - Phishing"; '
+    'alert ip $HOME_NET any -> any any (msg:"AT IP dataset - Phishing"; '
     'ip.dst; dataset:isset,phishing_ips,type ipv4,load phishing_ips.lst; '
     'reference:url,github.com/julioliraup/Antiphishing; '
     'reference:url,julioliraup.github.io/AT/signature.html?sid=6000002; '
     'classtype:social-engineering; sid:6000002; rev:1; '
     'metadata: signature_severity Major, created_et 2026_08_14;)\n'
+    '\n'
 )
 
 banner = """\033[32m
