@@ -14,8 +14,11 @@ jobs:
         id: indicators
         run: |
           if [ -f nrd_suspicious_domains.txt ]; then
-            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c 'split("\n")[:-1] | map({indicator: ., type: "domain", title: "Suspicious NRD", description: "Potentially malicious newly-registered domain", role: "phishing_host"})')
-            echo "indicators=$INDICATORS" >> $GITHUB_OUTPUT
+            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c 'split("\n")[:-1] | map({indicator: ., type: "domain", title: "Suspicious NRD", description: "Potentially malicious newly-registered domain"})')
+            EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+            echo "indicators<<$EOF" >> $GITHUB_OUTPUT
+            echo "$INDICATORS" >> $GITHUB_OUTPUT
+            echo "$EOF" >> $GITHUB_OUTPUT
           else
             echo "indicators=[]" >> $GITHUB_OUTPUT
           fi
