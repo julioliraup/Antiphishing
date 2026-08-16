@@ -22,8 +22,8 @@ jobs:
             echo "sid_tracker.txt not found, defaulting SID to 0"
             SID=0
           fi
-          # HTTP rules count is total SIDs minus the two DNS/TLS rules
-          HTTP=$((SID - 2))
+          # HTTP rules count is total SIDs minus the three dataset rules (DNS, TLS, IP)
+          HTTP=$((SID - 3))
           # Count number of lines in phishing.lst (each line represents a vector)
           if [ -f phishing.lst ]; then
             LINES=$(wc -l < phishing.lst)
@@ -66,6 +66,7 @@ jobs:
             antiphishing.rules
             antiphishing.rules.md5
             nrd_suspicious_domains.txt
+            phishing_ips.lst
           body: |
             | Rule / Intel Type | Count | Documentation |
             |---|---|---|
@@ -109,7 +110,7 @@ jobs:
             ![Antiphishing video](https://github.com/user-attachments/assets/32c89d48-f88c-4983-86ff-a17b8d6dcbd9)
             
             # General info
-            The ruleset is the `antiphishing.rules` file, which contains two rules (TLS, DNS) that depend on a `phishing.lst` list. Finally, there is another file named `antiphishing.rules.md5` for integrity verification. We provide a compressed file containing these mentioned files, which are constantly updated without changing the URL (tar.gz):
+            The ruleset is the `antiphishing.rules` file, which contains three rules (TLS, DNS, IP) that depend on the `phishing.lst` and `phishing_ips.lst` lists. Finally, there is another file named `antiphishing.rules.md5` for integrity verification. We provide a compressed file containing these mentioned files, which are constantly updated without changing the URL (tar.gz):
 
             ```
             https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz
