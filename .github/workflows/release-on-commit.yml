@@ -38,17 +38,26 @@ jobs:
             echo "nrd_suspicious_domains.txt not found, defaulting NRD count to 0"
             NRD=0
           fi
+          # Count number of lines in phishing_ips.lst
+          if [ -f phishing_ips.lst ]; then
+            IPS=$(wc -l < phishing_ips.lst)
+          else
+            echo "phishing_ips.lst not found, defaulting line count to 0"
+            IPS=0
+          fi
           TLS=$LINES
           DNS=$LINES
+          IP=$IPS
           echo "http=$HTTP" >> $GITHUB_OUTPUT
           echo "tls=$TLS" >> $GITHUB_OUTPUT
           echo "dns=$DNS" >> $GITHUB_OUTPUT
+          echo "ip=$IP" >> $GITHUB_OUTPUT
           echo "vectors=$LINES" >> $GITHUB_OUTPUT
           echo "nrd=$NRD" >> $GITHUB_OUTPUT
       - name: Compute total rule count
         id: total
         run: |
-          echo "total=$(( ${{ steps.counts.outputs.http }} + ${{ steps.counts.outputs.tls }} + ${{ steps.counts.outputs.dns }} ))" >> $GITHUB_OUTPUT
+          echo "total=$(( ${{ steps.counts.outputs.http }} + ${{ steps.counts.outputs.tls }} + ${{ steps.counts.outputs.dns }} + ${{ steps.counts.outputs.ip }} ))" >> $GITHUB_OUTPUT
 
       
       - name: Set release timestamp
@@ -73,10 +82,12 @@ jobs:
             | HTTP Rules | ${{ steps.counts.outputs.http }} | [HTTP Keywords](https://docs.suricata.io/en/latest/rules/http-keywords.html) |
             | TLS Rules | ${{ steps.counts.outputs.tls }} | [SSL/TLS Keywords](https://docs.suricata.io/en/latest/rules/tls-keywords.html) |
             | DNS Rules | ${{ steps.counts.outputs.dns }} | [DNS Keywords](https://docs.suricata.io/en/latest/rules/dns-keywords.html) |
+            | IP Rules | ${{ steps.counts.outputs.ip }} | [IP Keywords](https://docs.suricata.io/en/latest/rules/header-keywords.html) |
             | Suspicious NRD Domains | ${{ steps.counts.outputs.nrd }} | [NRD Intelligence](#-newly-registered-domains-nrd-threat-intelligence) |
             | **TOTAL SURICATA RULES** | **${{ steps.total.outputs.total }}** | |
 
             **Total Malicious Vectors (Base64 Dataset):** ${{ steps.counts.outputs.vectors }}  
+            **Total Malicious IPs (Dataset):** ${{ steps.counts.outputs.ip }}  
             **Total Suspicious NRD Domains Identified:** ${{ steps.counts.outputs.nrd }}
 
             ![Antiphishing logo](img/antiphishing.png)
