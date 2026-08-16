@@ -5,112 +5,121 @@
 [DONATE](https://github.com/sponsors/julioliraup) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT) - [CONTRIBUTING](./CONTRIBUTING.md) - [SUBMIT A VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22) - [REST API CTI](https://github.com/julioliraup/AT/wiki/REST-API-USE) - [WIKI](/julioliraup/Antiphishing/wiki)
 ]
 
-> Advanced Phishing Protection: Suricata rulesets open and free
+> **Predictive Phishing Intelligence for Suricata: Block the Adversary at Day Zero**
 
-# Functionality
+**Antiphishing** is an open-source (GPLv3) Cyber Threat Intelligence (CTI) infrastructure and Suricata ruleset designed to proactively neutralize phishing infrastructure at the network layer. 
 
-This rule is built using malicious URLs and domains involved in phishing attacks. We utilize some community APIs and NRD (Newly Registered Domain) to construct these rules, and with them, we create TLS, DNS, and HTTP rules.
+By combining curated threat indicators with aggressive Newly Registered Domain (NRD) heuristics, Antiphishing provides a deployment-ready Suricata ruleset that stops attacks before they mature.
 
-Our sources:
-1. [Phishstats](https://phishstats.info)
-2. [Openphish](https://openphish.com/)
-3. [cbuijs/nrd](https://github.com/cbuijs/nrd) — Newly Registered Domain with DNS traffic 
+---
 
-**Dataset loading:** The DNS and TLS signatures load `phishing.lst` directly through Suricata's dataset keyword. This ensures the phishing domain dataset is self-contained and does not require a separate `suricata.yaml` dataset declaration, which is especially important for packaged deployments such as OPNsense. **After updating `phishing.lst`, the Suricata ruleset must be reloaded for the updated dataset to become active.** See the Suricata documentation for details on dataset loading and rule reload behavior.
+## ⚡ Predictive Defense: Blocking the Enemy Before Detection
 
-Contribution: [CONTRIBUTING.md](https://github.com/julioliraup/Antiphishing/blob/main/CONTRIBUTING.md)
+Modern threat actors operate in a volatile window. A domain is registered, weaponized, and discarded within hours. If you are waiting for a domain to appear on a traditional blocklist, the adversary has already breached the perimeter.
 
-# Installation guide
-  <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux">
-    <img height="100" alt="Configuration-Ruleset-on-GNU-Linux" src="https://github.com/user-attachments/assets/859b9e29-a650-48b2-968c-628e8c345b5b" />
+Antiphishing flips this paradigm. We take a **Predictive Defense** approach:
+Our pipeline monitors Newly Registered Domains (NRDs) with observed DNS activity. We process **over 1.5 million domain combinations**, applying advanced heuristics (typosquatting, homoglyph detection, and brand impersonation patterns).
+
+The result? We empower your Suricata engine to **block the enemy's infrastructure before any prior global detection exists.** We cut off the attack vector while the adversary is still setting up their servers.
+
+---
+
+## 🛡️ Radical Transparency: Suspicious vs. Malicious
+
+To achieve true zero-day blocking, an intelligence engine must be aggressive. We believe in radical transparency with the security community regarding how this data should be applied:
+
+Domains classified by our NRD analysis pipeline act as a **Candidate-Generation Mechanism**. They must be treated as **Highly Suspicious Infrastructure**, not manually validated malicious vectors (IOCs).
+
+**⚠️ The False Positive Trade-off:**
+Because our engine prioritizes preemptive blocking over retroactive certainty, there is a chance of false positives. This NRD dataset is designed for SOCs, MSSPs, and Admins who prefer to proactively block suspicious emerging infrastructure and whitelist the exceptions, rather than waiting for a breach to happen.
+
+*If you demand absolute certainty, you will always be one step behind the attacker. Antiphishing gives you the advantage of anticipation.*
+
+**Standing on the Shoulders of Giants (Open-Source Ecosystem):**
+It is important to state that Antiphishing does not exist in a vacuum. We heavily utilize external free software, open-source libraries, and community APIs to process our NRDs and threat feeds. We build the intelligence pipeline and the Suricata correlation, but the project relies on the broader open-source community's tools to make this analysis possible.
+
+---
+
+## ⚙️ How It Works (Detection Layers)
+
+The ruleset (`antiphishing.rules`) and its datasets seamlessly deploy on your Suricata instance to provide multi-layered inspection. *(Note: Action capabilities—alerting vs. blocking—depend on whether Suricata is deployed in IDS or IPS mode)*:
+
+*   **DNS:** Interception during the resolution phase (`dns.query`). Identify or stop the connection before the handshake.
+*   **TLS:** Domain-based detection via Server Name Indication (`tls.sni`), requiring no HTTPS payload decryption.
+*   **HTTP:** Deep packet inspection for visible application-layer traffic.
+*   **IPv4:** Direct correlation of network flows with known malicious infrastructure using Suricata's highly efficient `dataset` keyword (`type ipv4`).
+
+### Direct Distribution Links
+*   **Tarball Archive:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz`
+*   **Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules`
+
+---
+
+## 🚀 Installation guide
+
+Our architecture is built for rapid deployment. 
+*Note: After updating `phishing.lst`, the Suricata ruleset must be reloaded for the updated dataset to become active.*
+
+<a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux">
+  <img height="100" alt="Configuration-Ruleset-on-GNU-Linux" src="https://github.com/user-attachments/assets/859b9e29-a650-48b2-968c-628e8c345b5b" />
 <img height="100" alt="Configuration-Ruleset-on-cearos" src="https://github.com/user-attachments/assets/083098a4-64b9-4c29-994d-75dcd61fa695" />
-  </a>
+</a>
 
-  <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-pfSense">
-    <img height="100" alt="Configuration-Ruleset-on-pfSense" src="https://github.com/user-attachments/assets/55fcc78d-af99-4e7f-9022-75b644f3c497" />
-  </a>
+<a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-pfSense">
+  <img height="100" alt="Configuration-Ruleset-on-pfSense" src="https://github.com/user-attachments/assets/55fcc78d-af99-4e7f-9022-75b644f3c497" />
+</a>
 
-  <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration:-Antiphishing-Ruleset-on-IDSTower">
-    <img height="90" alt="Configuration: Antiphishing Ruleset on IDSTower" src="https://github.com/user-attachments/assets/1044e7a6-13fa-48f4-bbfc-1a7662f5afd0" />
-  </a>
+<a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration:-Antiphishing-Ruleset-on-IDSTower">
+  <img height="90" alt="Configuration: Antiphishing Ruleset on IDSTower" src="https://github.com/user-attachments/assets/1044e7a6-13fa-48f4-bbfc-1a7662f5afd0" />
+</a>
 
-  [<img height="90" alt="OPNsense  julioliraup/antiphishing ruleset on Suricata" src="https://github.com/user-attachments/assets/551b04de-b34c-4856-85b7-1928639bc6ec" />](https://github.com/julioliraup/Antiphishing/wiki/Quick-Guide:-Installing-Antiphishing-on-OPNsense-(-=-26.7.2))
+[<img height="90" alt="OPNsense  julioliraup/antiphishing ruleset on Suricata" src="https://github.com/user-attachments/assets/551b04de-b34c-4856-85b7-1928639bc6ec" />](https://github.com/julioliraup/Antiphishing/wiki/Quick-Guide:-Installing-Antiphishing-on-OPNsense-(-=-26.7.2))
 
-## Upcoming Guides
-
+### Upcoming Guides
 <img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/>
 
-# General info
-The ruleset is the `antiphishing.rules` file, which contains three dataset rules (DNS, TLS, IP). The DNS and TLS rules depend on a `phishing.lst` list; the IP reputation rule depends on a `phishing_ips.lst` list. Note that `phishing_ips.lst` is a `type ipv4` dataset, so it holds plain-text addresses one per line, unlike `phishing.lst` which is base64-encoded. Finally, there is another file named `antiphishing.rules.md5` for integrity verification. We provide a compressed file containing these mentioned files, which are constantly updated without changing the URL (tar.gz):
+---
 
-```
-https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz
-```
-Dot rules file:
-
-```
-https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules
-```
-
-# 🛡️ NRD Threat Intelligence
-
-Antiphishing now includes a **Newly Registered Domains (NRD)** analysis layer focused on proactive phishing infrastructure detection.
-
-The pipeline analyzes newly registered domains with observed DNS resolution/activity through public recursive DNS resolvers.
-
-The analysis generates **more than 1.5 million possible domain combinations** for inspection, using techniques associated with:
-
-- Typosquatting
-- Homoglyph detection
-- Brand impersonation
-- High-risk phishing terminology
-
-The generated combinations are analyzed to identify domains that present suspicious characteristics.
-
-Domains classified as suspicious by the analysis pipeline are automatically incorporated into the Antiphishing intelligence dataset and can become detection indicators for **DNS and TLS/SNI traffic in Suricata**.
-
-Antiphishing Threat Intel are added to the file:
-```
-nrd_suspicious_domains.txt
-```
-
-Obs.: **NRD threat intelligence rules consider the domains suspicious; there is no validated confirmation that they are malicious, otherwise there is a high chance of false positives.**
-
-# Updates & Automation
-Our ruleset is updated dynamically every ~6 hours to track emerging phishing vectors. 
-- **SID Range:** `6000000` - `6100000` (Carefully assigned to prevent conflicts with other [rulesets](https://sidallocation.org/))  .
+## 🔄 Updates & Automation
+Our intelligence engine updates dynamically every ~6 hours to track emerging phishing vectors. 
+- **SID Range:** `6000000` - `6100000` (Carefully assigned to prevent conflicts).
 - **Format:** Fully compatible with `suricata-update`.
 
 ---
 
 ## 🙏 Acknowledgments
-
-A special and sincere thanks to [@antixmars](https://github.com/antixmars) for their contribution to this project.
-Good work deserves to be recognized — and yours was both timely and valuable. Thank you.
+A special and sincere thanks to [@antixmars](https://github.com/antixmars), [@sikysikov](https://github.com/sikysikov), [@satta](https://github.com/satta), and [@zoomequipd](https://github.com/zoomequipd) for their contributions, insights, and support. Antiphishing is a collaborative ecosystem, and good work deserves to be recognized. Thank you for helping build this project.
 
 ---
 
-## 💛 Support This Project
+## 💛 Support This Project (Funding & Sustainability)
 
-This project is maintained by a single person, driven by the belief that effective phishing detection should be accessible to everyone — from homelab enthusiasts to enterprise security teams.
+Antiphishing is maintained as an independent, public security infrastructure. We believe that predictive threat detection should not be locked behind corporate paywalls. 
 
-Building and sustaining this kind of threat intelligence infrastructure takes real time and real resources: pipeline maintenance, rule engineering, dataset curation, false positive management, and continuous research into emerging phishing tactics.
+However, **maintaining an aggressive zero-day intelligence pipeline has hard, unavoidable costs.** To process millions of signals and preemptively block adversaries, the project relies heavily on paid infrastructure. 
 
-If this project has been useful to you — whether it protected a network, helped a student learn, or saved an analyst time — consider supporting it. Even a small contribution makes it possible to keep the lights on.
+Your sponsorships are strictly used to fund the operation and evolution of this engine:
+* **API Licenses:** Commercial access for historical WHOIS, reverse DNS, and deep domain analytics.
+* **NRD Processing Power:** Substantial VPS CPU and RAM overhead to process over 1.5 million domain combinations daily.
+* **Hosting & Distribution:** Keeping the REST API, Dashboards, and global ruleset distribution reliable and fast.
 
-There is no subscription, no paywall, and no premium tier. Everything here is free. A donation is simply an acknowledgment that this work has value.
+### 🏢 Corporate Reciprocity (For MSSPs, SOCs, and Enterprises)
+If your organization uses Antiphishing to protect client networks, this project provides the capabilities of a commercial Threat Intelligence Platform (TIP) at zero cost. **We are performing the heavy computational lifting of a dedicated Threat Intel team.**
 
-#### 🇧🇷 Doação via PIX (Brasil)
+By sponsoring the project, you are **insuring your own defenses**. You guarantee that our servers stay online, our API limits expand, and our predictive detection capabilities continue to protect your clients without interruption. We do not restrict our intelligence behind premium data feeds or paywalls; your sponsorship is the sole mechanism that keeps this engine running.
+
+#### 🇧🇷 Apoio via PIX (Brasil)
+Se o projeto protegeu sua rede, ajudou nos seus estudos ou economizou horas do seu tempo de resposta a incidentes, considere apoiar a infraestrutura:
 - **Chave PIX:** `08650081401`
 - **Beneficiário:** Júlio Lira
 
 #### 🌐 GitHub Sponsors (International)
-For recurring support or one-time contributions: [github.com/sponsors/julioliraup](https://github.com/sponsors/julioliraup)
+For recurring support or one-time contributions from corporate entities or individuals: 
+[github.com/sponsors/julioliraup](https://github.com/sponsors/julioliraup)
 
 ---
 
 ## Contact & False Positives
-
 If you encounter any false positives, have suggestions, or want to discuss corporate partnerships:
 - **Email:** [jul10l1r4@disroot.org](mailto:jul10l1r4@disroot.org)
-- **Issues:** Please open a GitHub Issue for rule adjustments.
+- **Issues:** Please open a [GitHub Issue](https://github.com/julioliraup/Antiphishing/issues) for false positive tuning and rule adjustments.
