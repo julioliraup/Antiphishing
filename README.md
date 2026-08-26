@@ -50,8 +50,10 @@ The ruleset (`antiphishing.rules`) and its datasets seamlessly deploy on your Su
 *   **IPv4:** Direct correlation of network flows with known malicious infrastructure using Suricata's highly efficient `dataset` keyword (`type ipv4`).
 
 ### Direct Distribution Links
-*   **Tarball Archive:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz`
+*   **Tarball Archive:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz` (contains the rules and datasets below)
 *   **Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules`
+*   **Phishing Domains Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing.lst`
+*   **Phishing IPs Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing_ips.lst`
 
 ---
 
