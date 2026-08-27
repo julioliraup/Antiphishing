@@ -72,6 +72,7 @@ jobs:
           name: "Release ${{ steps.timestamp.outputs.time }}"
           files: |
             antiphishing.tar.gz
+            antiphishing-opnsense.tar.gz
             antiphishing.rules
             antiphishing.rules.md5
             nrd_suspicious_domains.txt
@@ -130,6 +131,12 @@ jobs:
 
             ```
             https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules
+            ```
+            
+            OPNsense Tarball (Replaces .lst with .rules for datasets):
+
+            ```
+            https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.tar.gz
             ```
 
             Phishing Domains Dataset:

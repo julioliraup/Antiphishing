@@ -51,6 +51,7 @@ The ruleset (`antiphishing.rules`) and its datasets seamlessly deploy on your Su
 
 ### Direct Distribution Links
 *   **Tarball Archive:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz` (contains the rules and datasets below)
+*   **OPNsense Tarball:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.tar.gz` (special package where datasets use `.rules` extension)
 *   **Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules`
 *   **Phishing Domains Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing.lst`
 *   **Phishing IPs Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing_ips.lst`
