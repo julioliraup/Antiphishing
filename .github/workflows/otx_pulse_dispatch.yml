@@ -14,25 +14,19 @@ jobs:
         id: indicators
         run: |
           if [ -f nrd_suspicious_domains.txt ]; then
-            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c 'split("\n")[:-1] | map({indicator: ., type: "domain", title: "Suspicious NRD", description: "Potentially malicious newly-registered domain"})')
+            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c 'split("\n")[:-1] | map({indicator: ., type: "domain", title: "Suspicious NRD", description: "Potentially malicious newly-registered domain"}) | {add: .}')
             EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
             echo "indicators<<$EOF" >> $GITHUB_OUTPUT
             echo "$INDICATORS" >> $GITHUB_OUTPUT
             echo "$EOF" >> $GITHUB_OUTPUT
           else
-            echo "indicators=[]" >> $GITHUB_OUTPUT
+            echo "indicators={}" >> $GITHUB_OUTPUT
           fi
 
       - name: Submit Pulse to OTX
         uses: julioliraup/otx-pulse@main
         with:
           otx-api-key: ${{ secrets.OTX_API_KEY }}
-          name: "Suspicious NRD Domains Detected"
-          description: "A set of newly-registered domains has been flagged as suspicious by the Antiphishing pipeline. These domains were analyzed for typosquatting and brand desensitization across 14 detection algorithms. There is a chance these are false-positives, please review before action."
-          public: "true"
-          tlp: "white"
-          tags: "suspicious,nrd,phishing,typosquatting"
-          references: "https://github.com/julioliraup/Antiphishing, https://julioliraup.github.io/AT"
-          adversary: "Unknown Scanners"
+          pulse-id: "6a8edabcd739b2fde47540f1"
           indicators: ${{ steps.indicators.outputs.indicators }}
 
