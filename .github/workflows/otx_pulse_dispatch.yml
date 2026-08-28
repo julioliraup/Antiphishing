@@ -14,14 +14,14 @@ jobs:
         id: indicators
         run: |
           if [ -f nrd_suspicious_domains.txt ]; then
-            # Read non-empty lines, build JSON array and add incremental id starting at 1
-            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c 'split("\n")[:-1] | to_entries | map({id: (.key + 1), indicator: .value, type: "domain", title: "Suspicious NRD", description: "Potentially malicious newly-registered domain (NRD) from repository listing."})')
+            # Read non-empty lines, build JSON array with 'edit' attribute and incremental id starting at 1
+            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c '{edit: (split("\n")[:-1] | to_entries | map({id: (.key + 1), indicator: .value, type: "domain"}))}')
             EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
             echo "indicators<<$EOF" >> $GITHUB_OUTPUT
             echo "$INDICATORS" >> $GITHUB_OUTPUT
             echo "$EOF" >> $GITHUB_OUTPUT
           else
-            echo "indicators={}" >> $GITHUB_OUTPUT
+            echo "indicators={\"edit\":[]}" >> $GITHUB_OUTPUT
           fi
 
       - name: Submit Pulse to OTX
@@ -30,3 +30,4 @@ jobs:
           otx-api-key: ${{ secrets.OTX_API_KEY }}
           pulse-id: "6a8edabcd739b2fde47540f1"
           indicators: ${{ steps.indicators.outputs.indicators }}
+          tlp: white
