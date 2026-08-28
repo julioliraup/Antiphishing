@@ -42,17 +42,16 @@ It is important to state that Antiphishing does not exist in a vacuum. We heavil
 
 ## ⚙️ How It Works (Detection Layers)
 
-The ruleset (`antiphishing.rules`) and its datasets seamlessly deploy on your Suricata instance to provide multi-layered inspection. *(Note: Action capabilities—alerting vs. blocking—depend on whether Suricata is deployed in IDS or IPS mode)*:
+The ruleset (`antiphishing.rules`) seamlessly deploys on your Suricata instance to provide multi-layered inspection. *(Note: Action capabilities—alerting vs. blocking—depend on whether Suricata is deployed in IDS or IPS mode)*:
 
 *   **DNS:** Interception during the resolution phase (`dns.query`). Identify or stop the connection before the handshake.
 *   **TLS:** Domain-based detection via Server Name Indication (`tls.sni`), requiring no HTTPS payload decryption.
 *   **HTTP:** Deep packet inspection for visible application-layer traffic.
-*   **IPv4:** Direct correlation of network flows with known malicious infrastructure using Suricata's highly efficient `dataset` keyword (`type ipv4`).
+*   **IPv4:** Direct correlation of network flows with known malicious infrastructure (inline IP group, no external dataset required).
 
 ### Direct Distribution Links
-*   **Tarball Archive:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz` (contains the rules and datasets below)
-*   **OPNsense Tarball:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.tar.gz` (special package where datasets use `.rules` extension)
 *   **Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules`
+*   **OPNsense Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.rules` (PCRE-based, self-contained — no auxiliary dataset files needed)
 *   **Phishing Domains Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing.lst`
 *   **Phishing IPs Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing_ips.lst`
 

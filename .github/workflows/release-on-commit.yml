@@ -71,10 +71,9 @@ jobs:
           tag_name: "release-${{ github.run_id }}"
           name: "Release ${{ steps.timestamp.outputs.time }}"
           files: |
-            antiphishing.tar.gz
-            antiphishing-opnsense.tar.gz
             antiphishing.rules
             antiphishing.rules.md5
+            antiphishing-opnsense.rules
             nrd_suspicious_domains.txt
             phishing_ips.lst
           body: |
@@ -122,21 +121,18 @@ jobs:
             ![Antiphishing video](https://github.com/user-attachments/assets/32c89d48-f88c-4983-86ff-a17b8d6dcbd9)
             
             # General info
-            The ruleset is the `antiphishing.rules` file, which contains three rules (TLS, DNS, IP) that depend on the `phishing.lst` and `phishing_ips.lst` lists. Finally, there is another file named `antiphishing.rules.md5` for integrity verification. We provide a compressed file containing these mentioned files, which are constantly updated without changing the URL (tar.gz):
+            The ruleset is the `antiphishing.rules` file, which contains TLS, DNS, HTTP, and IP rules. The file `antiphishing.rules.md5` is provided for integrity verification. All files are constantly updated without changing the URL:
 
-            ```
-            https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.tar.gz
-            ```
-            Dot rules file:
+            Rules file:
 
             ```
             https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules
             ```
-            
-            OPNsense Tarball (Replaces .lst with .rules for datasets):
+
+            OPNsense Rules File (PCRE-based, self-contained — no auxiliary dataset files needed):
 
             ```
-            https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.tar.gz
+            https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.rules
             ```
 
             Phishing Domains Dataset:
