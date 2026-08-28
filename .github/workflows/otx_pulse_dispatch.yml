@@ -14,7 +14,8 @@ jobs:
         id: indicators
         run: |
           if [ -f nrd_suspicious_domains.txt ]; then
-            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c 'split("\n")[:-1] | map({indicator: ., type: "domain", title: "Suspicious NRD", description: "Potentially malicious newly-registered domain"}) | {add: .}')
+            # Read non-empty lines, build JSON array and add incremental id starting at 1
+            INDICATORS=$(awk 'NF' nrd_suspicious_domains.txt | jq -R -s -c 'split("\n")[:-1] | to_entries | map({id: (.key + 1), indicator: .value, type: "domain", title: "Suspicious NRD", description: "Potentially malicious newly-registered domain (NRD) from repository listing."})')
             EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
             echo "indicators<<$EOF" >> $GITHUB_OUTPUT
             echo "$INDICATORS" >> $GITHUB_OUTPUT
@@ -29,4 +30,3 @@ jobs:
           otx-api-key: ${{ secrets.OTX_API_KEY }}
           pulse-id: "6a8edabcd739b2fde47540f1"
           indicators: ${{ steps.indicators.outputs.indicators }}
-
