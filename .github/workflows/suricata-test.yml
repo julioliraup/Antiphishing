@@ -1,0 +1,26 @@
+name: suricata-test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  suricata-load-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Suricata
+        run: |
+          sudo add-apt-repository -y ppa:oisf/suricata-stable
+          sudo apt-get update && sudo apt-get install -y suricata
+
+      - name: Load-test rules file (suricata -T)
+        run: |
+          set -e
+
+          for file in ./*.rules; do
+            echo "== $file =="
+            sudo suricata -T -S "$file"
+          done
