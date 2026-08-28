@@ -50,11 +50,11 @@ The ruleset (`antiphishing.rules`) seamlessly deploys on your Suricata instance 
 *   **IPv4:** Direct correlation of network flows with known malicious infrastructure (inline IP group, no external dataset required).
 
 ### Direct Distribution Links
-*   **Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules`
-*   **OPNsense Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.rules` (PCRE-based, self-contained — no auxiliary dataset files needed)
-*   **Phishing Domains Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing.lst`
+*   **Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules` (Need dataset file. IE.: .lst files)
+*   **OPNsense Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.rules` (Need dataset file. IE.: .lst files)
+*   **Phishing Domains Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing.lst` (base64 file)
 *   **Phishing IPs Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing_ips.lst`
-
+*   **NRDs suspicious list**: `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/nrd_suspicious_domains.txt`
 ---
 
 ## 🚀 Installation guide

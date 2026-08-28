@@ -76,6 +76,8 @@ jobs:
             antiphishing-opnsense.rules
             nrd_suspicious_domains.txt
             phishing_ips.lst
+            antiphishing.tar.gz
+            antiphishing-opnsense.tar.gz
           body: |
             | Rule / Intel Type | Count | Documentation |
             |---|---|---|
@@ -121,18 +123,18 @@ jobs:
             ![Antiphishing video](https://github.com/user-attachments/assets/32c89d48-f88c-4983-86ff-a17b8d6dcbd9)
             
             # General info
-            The ruleset is the `antiphishing.rules` file, which contains TLS, DNS, HTTP, and IP rules. The file `antiphishing.rules.md5` is provided for integrity verification. All files are constantly updated without changing the URL:
+          The ruleset is the `antiphishing.rules` file, which contains TLS, DNS, HTTP, and IP rules (Need dataset files IE.: .lst files). The file `antiphishing.rules.md5` is provided for integrity verification. All files are constantly updated without changing the URL:
 
-            Rules file:
+            Rules file tar.gz (with: antiphishing.rules, antiphishing.rules.md5, phishing.lst, phihing_ips.lst):
 
             ```
             https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules
             ```
 
-            OPNsense Rules File (PCRE-based, self-contained — no auxiliary dataset files needed):
+            OPNsense Rules tar.gz (with: antiphishing-opnsense.rules, phishing.lst, phishing_ips.lst):
 
             ```
-            https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.rules
+            https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.tar.gz
             ```
 
             Phishing Domains Dataset:
