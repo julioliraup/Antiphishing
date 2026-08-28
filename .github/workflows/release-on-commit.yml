@@ -123,7 +123,7 @@ jobs:
             ![Antiphishing video](https://github.com/user-attachments/assets/32c89d48-f88c-4983-86ff-a17b8d6dcbd9)
             
             # General info
-          The ruleset is the `antiphishing.rules` file, which contains TLS, DNS, HTTP, and IP rules (Need dataset files IE.: .lst files). The file `antiphishing.rules.md5` is provided for integrity verification. All files are constantly updated without changing the URL:
+            The ruleset is the `antiphishing.rules` file, which contains TLS, DNS, HTTP, and IP rules (Need dataset files IE.: .lst files). The file `antiphishing.rules.md5` is provided for integrity verification. All files are constantly updated without changing the URL:
 
             Rules file tar.gz (with: antiphishing.rules, antiphishing.rules.md5, phishing.lst, phihing_ips.lst):
 
