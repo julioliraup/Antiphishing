@@ -90,7 +90,7 @@ Our intelligence engine updates dynamically every ~6 hours to track emerging phi
 ---
 
 ## 🙏 Acknowledgments
-A special and sincere thanks to [@antixmars](https://github.com/antixmars), [@sikysikov](https://github.com/sikysikov), [@satta](https://github.com/satta), and [@zoomequipd](https://github.com/zoomequipd) for their contributions, insights, and support. Antiphishing is a collaborative ecosystem, and good work deserves to be recognized. Thank you for helping build this project.
+A special and sincere thanks to [@antixmars](https://github.com/antixmars), [@sikysikov](https://github.com/sikysikov), [@satta](https://github.com/satta), [@flipper203](https://github.com/flipper203) and [@zoomequipd](https://github.com/zoomequipd) for their contributions, insights, and support. Antiphishing is a collaborative ecosystem, and good work deserves to be recognized. Thank you for helping build this project.
 
 ---
 
