@@ -18,6 +18,8 @@ jobs:
 
       - name: Load-test rules file (suricata -T)
         run: |
+          sudo mkdir -p /usr/local/etc/suricata/rules && > /usr/local/etc/suricata/rules/phishing.lst && > /usr/local/etc/suricata/rules/phishing_ips.lst
+
           set -e
 
           for file in ./*.rules; do
