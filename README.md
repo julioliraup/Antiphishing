@@ -1,127 +1,520 @@
+# Antiphishing — Predictive Phishing Intelligence for Suricata
+
 ![Antiphishing logo](img/antiphishing.png)
+
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/julioliraup/Antiphishing) ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/julioliraup/Antiphishing)
 
-[
-[DONATE](https://github.com/sponsors/julioliraup) - [DASHBOARD VECTORS](https://julioliraup.github.io/AT) - [CONTRIBUTING](./CONTRIBUTING.md) - [SUBMIT A VECTOR](/julioliraup/Antiphishing/issues/new?q=state%3Aopen+label%3A%22Phishing+Vector%22) - [REST API CTI](https://github.com/julioliraup/AT/wiki/REST-API-USE) - [WIKI](/julioliraup/Antiphishing/wiki)
-]
+[**[DONATE](https://github.com/sponsors/julioliraup)**] · [**DASHBOARD VECTORS**](https://julioliraup.github.io/AT) · [**CONTRIBUTING**](./CONTRIBUTING.md) · [**SUBMIT A VECTOR**](/julioliraup/Antiphishing/issues/new?q=state%3Aopen%20label%3A%22Phishing%20Vector%22) · [**REST API CTI**](https://github.com/julioliraup/AT/wiki/REST-API-USE) · [**WIKI**](/julioliraup/Antiphishing/wiki)
 
-> **Predictive Phishing Intelligence for Suricata: Block the Adversary at Day Zero**
+> **Predictive Phishing Intelligence for Suricata — Preemptive Defense from Day Zero**
 
-**Antiphishing** is an open-source (GPLv3) Cyber Threat Intelligence (CTI) infrastructure and Suricata ruleset designed to proactively neutralize phishing infrastructure at the network layer. 
+**Antiphishing** is an open-source (GPLv3) Cyber Threat Intelligence (CTI) infrastructure and Suricata ruleset designed to identify and disrupt phishing infrastructure as early as possible at the network layer.
 
-By combining curated threat indicators with aggressive Newly Registered Domain (NRD) heuristics, Antiphishing provides a deployment-ready Suricata ruleset that stops attacks before they mature.
+The project combines curated phishing indicators, automated threat intelligence processing, and analysis of Newly Registered Domains (NRDs) to identify suspicious emerging infrastructure before it becomes widely recognized by conventional threat feeds.
 
----
-
-## ⚡ Predictive Defense: Blocking the Enemy Before Detection
-
-Modern threat actors operate in a volatile window. A domain is registered, weaponized, and discarded within hours. If you are waiting for a domain to appear on a traditional blocklist, the adversary has already breached the perimeter.
-
-Antiphishing flips this paradigm. We take a **Predictive Defense** approach:
-Our pipeline monitors Newly Registered Domains (NRDs) with observed DNS activity. We process **over 1.5 million domain combinations**, applying advanced heuristics (typosquatting, homoglyph detection, and brand impersonation patterns).
-
-The result? We empower your Suricata engine to **block the enemy's infrastructure before any prior global detection exists.** We cut off the attack vector while the adversary is still setting up their servers.
+Antiphishing is designed to transform emerging threat intelligence into deployable Suricata detection and prevention rules.
 
 ---
 
-## 🛡️ Radical Transparency: Suspicious vs. Malicious
+## ⚡ Predictive Defense: From Newly Registered Domains to Early Detection
 
-To achieve true zero-day blocking, an intelligence engine must be aggressive. We believe in radical transparency with the security community regarding how this data should be applied:
+Modern phishing infrastructure can be created, weaponized, and abandoned within a short period of time.
 
-Domains classified by our NRD analysis pipeline act as a **Candidate-Generation Mechanism**. They must be treated as **Highly Suspicious Infrastructure**, not manually validated malicious vectors (IOCs).
+Traditional blocklists are valuable, but they generally identify infrastructure after indicators have already been observed, reported, or validated.
 
-**⚠️ The False Positive Trade-off:**
-Because our engine prioritizes preemptive blocking over retroactive certainty, there is a chance of false positives. This NRD dataset is designed for SOCs, MSSPs, and Admins who prefer to proactively block suspicious emerging infrastructure and whitelist the exceptions, rather than waiting for a breach to happen.
+Antiphishing explores a complementary approach: **preemptive threat intelligence**.
 
-*If you demand absolute certainty, you will always be one step behind the attacker. Antiphishing gives you the advantage of anticipation.*
+The NRD pipeline monitors newly registered domains with observed DNS activity and analyzes candidate domains using multiple heuristics, including:
 
-**Standing on the Shoulders of Giants (Open-Source Ecosystem):**
-It is important to state that Antiphishing does not exist in a vacuum. We heavily utilize external free software, open-source libraries, and community APIs to process our NRDs and threat feeds. We build the intelligence pipeline and the Suricata correlation, but the project relies on the broader open-source community's tools to make this analysis possible.
+* Typosquatting detection
+* Homoglyph detection
+* Brand impersonation patterns
+* Suspicious keywords
+* Domain similarity analysis
+* Other indicators derived from the project's analysis pipeline
+
+The pipeline analyzes **more than 1.5 million candidate domain combinations** and produces a set of domains considered suspicious enough for further security action.
+
+The objective is not to claim that every newly registered domain is malicious. Instead, the goal is to identify **potential phishing infrastructure at an early stage**, before it necessarily appears in conventional malicious-domain feeds.
+
+This creates a complementary detection layer between raw infrastructure registration and confirmed malicious intelligence.
+
+### The Day-Zero Concept
+
+The term **Day Zero** in Antiphishing refers to the project's goal of reducing the time between the emergence of suspicious infrastructure and defensive action.
+
+It does **not** mean that Antiphishing can detect every zero-day attack, vulnerability, or previously unknown malware family.
+
+The focus is narrower and practical:
+
+> **Identify suspicious phishing infrastructure as early as possible and make that intelligence actionable at the network layer.**
 
 ---
 
-## ⚙️ How It Works (Detection Layers)
+## 🛡️ Radical Transparency: Suspicious Does Not Mean Confirmed Malicious
 
-The ruleset (`antiphishing.rules`) seamlessly deploys on your Suricata instance to provide multi-layered inspection. *(Note: Action capabilities—alerting vs. blocking—depend on whether Suricata is deployed in IDS or IPS mode)*:
+Predictive intelligence requires a different confidence model from traditional validated IOC feeds.
 
-*   **DNS:** Interception during the resolution phase (`dns.query`). Identify or stop the connection before the handshake.
-*   **TLS:** Domain-based detection via Server Name Indication (`tls.sni`), requiring no HTTPS payload decryption.
-*   **HTTP:** Deep packet inspection for visible application-layer traffic.
-*   **IPv4:** Direct correlation of network flows with known malicious infrastructure (inline IP group, no external dataset required).
+Domains generated by the NRD analysis pipeline are **candidate indicators** produced through automated heuristics. They should therefore be treated as **highly suspicious infrastructure**, rather than automatically interpreted as manually validated malicious IOCs.
 
-### Direct Distribution Links
-*   **Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules` (Need dataset file. IE.: .lst files)
-*   **OPNsense Rules File:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.rules` (Need dataset file. IE.: .lst files)
-*   **Phishing Domains Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing.lst` (base64 file)
-*   **Phishing IPs Dataset:** `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing_ips.lst`
-*   **NRDs suspicious list**: `https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/nrd_suspicious_domains.txt`
+### ⚠️ False Positive Consideration
+
+Because the NRD pipeline prioritizes early detection, false positives are possible.
+
+Organizations deploying predictive indicators should consider appropriate:
+
+* Whitelisting
+* Monitoring
+* Alert tuning
+* Risk-based enforcement
+* Validation workflows
+
+The NRD-derived intelligence is particularly suited to environments where early blocking of suspicious infrastructure is preferable to waiting for a domain to become a confirmed malicious IOC.
+
+This is a deliberate trade-off:
+
+> **Earlier intelligence can provide earlier protection, but earlier intelligence also carries greater uncertainty.**
+
 ---
 
-## 🚀 Installation guide
+## 🧠 Threat Intelligence Pipeline
 
-Our architecture is built for rapid deployment. 
-*Note: After updating `phishing.lst`, the Suricata ruleset must be reloaded for the updated dataset to become active.*
+Antiphishing is more than a static phishing blocklist.
+
+The project combines multiple sources and processing stages:
+
+```text
+External Threat Feeds
+        │
+        ├── Phishing indicators
+        │
+        └── Infrastructure indicators
+                 │
+                 ▼
+        ┌───────────────────┐
+        │ Intelligence      │
+        │ Processing        │
+        └───────────────────┘
+                 │
+                 ├── Domain analysis
+                 ├── IP analysis
+                 └── URL processing
+                 │
+                 ▼
+        Newly Registered Domains
+                 │
+                 ▼
+        Candidate Generation
+                 │
+                 ├── Typosquatting
+                 ├── Homoglyphs
+                 ├── Keywords
+                 └── Brand impersonation
+                 │
+                 ▼
+        Suspicious Infrastructure
+                 │
+                 ▼
+        Suricata Detection
+                 │
+                 ▼
+        IDS / IPS Enforcement
+```
+
+The project also relies on external free software, open-source libraries, public intelligence sources, and community APIs.
+
+Antiphishing's role is to combine these components into an automated intelligence and detection pipeline.
+
+---
+
+## ⚙️ Detection Layers
+
+The main Suricata ruleset (`antiphishing.rules`) provides multiple detection layers.
+
+> **Important:** Whether a matching rule generates an alert or actively blocks traffic depends on how Suricata is deployed and configured, particularly whether it is operating in IDS or IPS mode.
+
+### DNS
+
+Detection of suspicious domains during DNS inspection using:
+
+```text
+dns.query
+```
+
+The native Suricata dataset contains the domain intelligence used by the DNS signature.
+
+### TLS
+
+Detection through the TLS Server Name Indication (SNI):
+
+```text
+tls.sni
+```
+
+This allows domain-based detection without decrypting HTTPS traffic.
+
+### HTTP
+
+Inspection of HTTP traffic and phishing URLs using application-layer signatures.
+
+HTTP detection can provide more specific visibility into the requested resource when the traffic is available for inspection.
+
+### IPv4
+
+Detection of connections to known phishing infrastructure using destination IPv4 intelligence.
+
+The main ruleset uses Suricata's dataset mechanism for this intelligence.
+
+---
+
+## 📦 Datasets
+
+The main Antiphishing ruleset uses native Suricata external datasets.
+
+### Phishing Domains
+
+```text
+phishing.lst
+```
+
+Domain intelligence used by the DNS and TLS dataset signatures.
+
+The domain dataset is maintained separately from the Suricata signature file because it contains dataset values rather than Suricata signatures.
+
+### Phishing IPv4
+
+```text
+phishing_ips.lst
+```
+
+IPv4 indicators used by the destination-IP dataset signature.
+
+### NRD Suspicious Domains
+
+```text
+nrd_suspicious_domains.txt
+```
+
+Domains generated by the NRD analysis pipeline and classified as suspicious candidates.
+
+**Important:** NRD-derived domains are predictive intelligence and should not automatically be interpreted as confirmed malicious indicators.
+
+---
+
+## 🔌 OPNsense Integration
+
+Antiphishing is integrated with the OPNsense IDS/IPS ecosystem through:
+
+`os-intrusion-detection-content-at-antiphishing`
+
+The OPNsense integration is currently **not equivalent to the full native Antiphishing ruleset**.
+
+### Current status
+
+The existing OPNsense integration reliably provides the **HTTP signatures**.
+
+The external DNS, TLS, and IPv4 datasets require additional handling because the OPNsense IDS content framework does not currently provide a uniform mechanism for distributing and loading external Suricata dataset files.
+
+The main Antiphishing ruleset continues to use Suricata's native dataset implementation and is not changed to accommodate this OPNsense limitation.
+
+An OPNsense-specific ruleset is being investigated and tested separately.
+
+> **OPNsense users should therefore verify the capabilities of the specific distributed ruleset before assuming that all Antiphishing detection layers are active.**
+
+The project aims to provide a stable OPNsense integration rather than shipping a configuration that can cause Suricata to fail during startup or reload.
+
+---
+
+## 📁 Direct Distribution Links
+
+### Main Suricata Ruleset
+
+`antiphishing.rules`
+
+https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing.rules
+
+The main ruleset uses the external datasets described above.
+
+### OPNsense Ruleset
+
+`antiphishing-opnsense.rules`
+
+https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.rules
+
+This file is an OPNsense-specific compatibility variant and may not provide the same detection coverage as the main ruleset.
+
+### Phishing Domains Dataset
+
+`phishing.lst`
+
+https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing.lst
+
+Base64-encoded Suricata dataset.
+
+### Phishing IPv4 Dataset
+
+`phishing_ips.lst`
+
+https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/phishing_ips.lst
+
+Plain-text IPv4 dataset.
+
+### NRD Suspicious Domains
+
+`nrd_suspicious_domains.txt`
+
+https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/nrd_suspicious_domains.txt
+
+NRD-derived suspicious-domain intelligence.
+
+---
+
+## 🚀 Installation
+
+Antiphishing is designed to integrate with Suricata and `suricata-update`.
+
+The preferred installation method depends on the target platform.
+
+### GNU/Linux
+
+See the installation and configuration guide:
+
+https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux
 
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux">
   <img height="100" alt="Configuration-Ruleset-on-GNU-Linux" src="https://github.com/user-attachments/assets/859b9e29-a650-48b2-968c-628e8c345b5b" />
-<img height="100" alt="Configuration-Ruleset-on-cearos" src="https://github.com/user-attachments/assets/083098a4-64b9-4c29-994d-75dcd61fa695" />
+  <img height="100" alt="Configuration-Ruleset-on-cearos" src="https://github.com/user-attachments/assets/083098a4-64b9-4c29-994d-75dcd61fa695" />
 </a>
+
+### pfSense
+
+https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-pfSense
 
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-pfSense">
   <img height="100" alt="Configuration-Ruleset-on-pfSense" src="https://github.com/user-attachments/assets/55fcc78d-af99-4e7f-9022-75b644f3c497" />
 </a>
 
+### IDSTower
+
+https://github.com/julioliraup/Antiphishing/wiki/Configuration:-Antiphishing-Ruleset-on-IDSTower
+
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration:-Antiphishing-Ruleset-on-IDSTower">
   <img height="90" alt="Configuration: Antiphishing Ruleset on IDSTower" src="https://github.com/user-attachments/assets/1044e7a6-13fa-48f4-bbfc-1a7662f5afd0" />
 </a>
 
-[<img height="90" alt="OPNsense  julioliraup/antiphishing ruleset on Suricata" src="https://github.com/user-attachments/assets/551b04de-b34c-4856-85b7-1928639bc6ec" />](https://github.com/julioliraup/Antiphishing/wiki/Quick-Guide:-Installing-Antiphishing-on-OPNsense-(-=-26.7.2))
+### OPNsense
+
+The Antiphishing ruleset is available through the OPNsense IDS/IPS content ecosystem.
+
+<a href="https://github.com/julioliraup/Antiphishing/wiki/Quick-Guide:-Installing-Antiphishing-on-OPNsense-(-=-26.7.2)">
+  <img height="90" alt="OPNsense Antiphishing ruleset on Suricata" src="https://github.com/user-attachments/assets/551b04de-b34c-4856-85b7-1928639bc6ec" />
+</a>
+
+See the OPNsense documentation and the project wiki for the current integration status and installation procedure.
 
 ### Upcoming Guides
+
 <img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/>
 
 ---
 
 ## 🔄 Updates & Automation
-Our intelligence engine updates dynamically every ~6 hours to track emerging phishing vectors. 
-- **SID Range:** `6000000` - `6100000` (Carefully assigned to prevent conflicts).
-- **Format:** Fully compatible with `suricata-update`.
+
+The Antiphishing intelligence pipeline is updated dynamically approximately every **6 hours** to track emerging phishing infrastructure.
+
+The update pipeline processes intelligence from multiple sources and regenerates the Suricata rules and datasets.
+
+### Suricata Integration
+
+The project is designed for integration with:
+
+* `suricata-update`
+* Suricata IDS
+* Suricata IPS
+* Firewall platforms using Suricata
+* Security monitoring environments
+
+### SID Allocation
+
+Antiphishing uses the following SID range:
+
+```text
+6000000 - 6100000
+```
+
+SIDs are carefully assigned within the project to avoid internal collisions.
+
+---
+
+## 📊 Intelligence and Transparency
+
+Antiphishing exposes its intelligence through public infrastructure so that users can inspect, evaluate, and integrate the data into their own security workflows.
+
+Available components include:
+
+* Public threat-intelligence dashboard
+* Suricata rules
+* Domain datasets
+* IPv4 datasets
+* NRD-derived suspicious-domain intelligence
+* REST API
+* Documentation
+* Community issue tracking
+
+The project intentionally exposes its detection infrastructure instead of treating the detection methodology as a black box.
+
+---
+
+## 🌐 Open-Source Ecosystem
+
+Antiphishing is built on top of and alongside the broader open-source security ecosystem.
+
+The project makes use of external:
+
+* Threat feeds
+* Public APIs
+* Open-source libraries
+* Domain-analysis tools
+* DNS infrastructure
+* Suricata
+* Suricata-update
+
+Antiphishing does not claim ownership of the underlying intelligence sources or tools it consumes.
+
+Its primary contribution is the **automation, correlation, analysis pipeline, and conversion of intelligence into deployable Suricata detection content**.
 
 ---
 
 ## 🙏 Acknowledgments
-A special and sincere thanks to [@antixmars](https://github.com/antixmars), [@sikysikov](https://github.com/sikysikov), [@satta](https://github.com/satta), [@flipper203](https://github.com/flipper203) and [@zoomequipd](https://github.com/zoomequipd) for their contributions, insights, and support. Antiphishing is a collaborative ecosystem, and good work deserves to be recognized. Thank you for helping build this project.
+
+A special and sincere thanks to [@antixmars](https://github.com/antixmars), [@sikysikov](https://github.com/sikysikov), [@satta](https://github.com/satta), [@flipper203](https://github.com/flipper203), and [@zoomequipd](https://github.com/zoomequipd) for their contributions, insights, testing, and support.
+
+Antiphishing is a collaborative ecosystem, and community feedback is an important part of improving the project's detection quality and platform compatibility.
 
 ---
 
-## 💛 Support This Project (Funding & Sustainability)
+## 💛 Support This Project
 
-Antiphishing is maintained as an independent, public security infrastructure. We believe that predictive threat detection should not be locked behind corporate paywalls. 
+Antiphishing is maintained as an independent, public security infrastructure.
 
-However, **maintaining an aggressive zero-day intelligence pipeline has hard, unavoidable costs.** To process millions of signals and preemptively block adversaries, the project relies heavily on paid infrastructure. 
+The project aims to make proactive phishing intelligence and network-level detection available without requiring organizations to purchase a commercial threat-intelligence platform.
 
-Your sponsorships are strictly used to fund the operation and evolution of this engine:
-* **API Licenses:** Commercial access for historical WHOIS, reverse DNS, and deep domain analytics.
-* **NRD Processing Power:** Substantial VPS CPU and RAM overhead to process over 1.5 million domain combinations daily.
-* **Hosting & Distribution:** Keeping the REST API, Dashboards, and global ruleset distribution reliable and fast.
+However, operating a continuously updated intelligence pipeline has real infrastructure and operational costs.
 
-### 🏢 Corporate Reciprocity (For MSSPs, SOCs, and Enterprises)
-If your organization uses Antiphishing to protect client networks, this project provides the capabilities of a commercial Threat Intelligence Platform (TIP) at zero cost. **We are performing the heavy computational lifting of a dedicated Threat Intel team.**
+Support helps fund:
 
-By sponsoring the project, you are **insuring your own defenses**. You guarantee that our servers stay online, our API limits expand, and our predictive detection capabilities continue to protect your clients without interruption. We do not restrict our intelligence behind premium data feeds or paywalls; your sponsorship is the sole mechanism that keeps this engine running.
+### API and Intelligence
 
-#### 🇧🇷 Apoio via PIX (Brasil)
-Se o projeto protegeu sua rede, ajudou nos seus estudos ou economizou horas do seu tempo de resposta a incidentes, considere apoiar a infraestrutura:
-- **Chave PIX:** `08650081401`
-- **Beneficiário:** Júlio Lira
+* Commercial API access
+* Historical WHOIS data
+* Reverse DNS
+* Domain analytics
+* Additional intelligence sources
 
-#### 🌐 GitHub Sponsors (International)
-For recurring support or one-time contributions from corporate entities or individuals: 
-[github.com/sponsors/julioliraup](https://github.com/sponsors/julioliraup)
+### NRD Processing
+
+The NRD analysis pipeline requires substantial CPU and memory resources to process large numbers of candidate domain combinations.
+
+### Infrastructure
+
+Sponsorship also helps maintain:
+
+* VPS infrastructure
+* REST API services
+* Public dashboards
+* Ruleset distribution
+* Automated processing
+* Continuous updates
 
 ---
 
-## Contact & False Positives
-If you encounter any false positives, have suggestions, or want to discuss corporate partnerships:
-- **Email:** [jul10l1r4@disroot.org](mailto:jul10l1r4@disroot.org)
-- **Issues:** Please open a [GitHub Issue](https://github.com/julioliraup/Antiphishing/issues) for false positive tuning and rule adjustments.
+## 🏢 Corporate Support
+
+For MSSPs, SOCs, security teams, researchers, and organizations using Antiphishing in production:
+
+Antiphishing provides an open-source approach to predictive phishing intelligence and network-level enforcement through Suricata.
+
+By supporting the project, organizations help maintain the infrastructure required to continuously process, analyze, and distribute emerging threat intelligence.
+
+The goal is to keep the intelligence accessible to the community rather than placing the entire detection pipeline behind a commercial paywall.
+
+### 🇧🇷 Support via PIX
+
+If Antiphishing protects your network, supports your research, or saves your team time during incident response, consider supporting the infrastructure:
+
+* **PIX:** `08650081401`
+* **Beneficiary:** Júlio Lira
+
+### 🌐 GitHub Sponsors
+
+For recurring support or one-time contributions:
+
+https://github.com/sponsors/julioliraup
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+You can contribute by:
+
+* Reporting false positives
+* Submitting phishing vectors
+* Improving detection logic
+* Testing platform integrations
+* Improving documentation
+* Reviewing rules
+* Improving the intelligence pipeline
+* Contributing code
+
+See:
+
+`CONTRIBUTING.md`
+
+---
+
+## 🐛 False Positives and Issues
+
+Predictive intelligence necessarily involves uncertainty.
+
+If you identify a false positive, incorrect indicator, detection problem, or integration issue, please open a GitHub Issue with as much technical information as possible.
+
+Useful information may include:
+
+* SID
+* Domain/IP involved
+* Detection protocol
+* Suricata version
+* Platform
+* Relevant logs
+* Reproduction steps
+
+This information helps improve the detection pipeline while reducing unnecessary false positives.
+
+---
+
+## 📬 Contact
+
+For security research, false positives, technical collaboration, or partnership discussions:
+
+**Email:** [jul10l1r4@disroot.org](mailto:jul10l1r4@disroot.org)
+
+**Issues:**
+https://github.com/julioliraup/Antiphishing/issues
+
+---
+
+## 🎯 Project Vision
+
+Antiphishing is built around a simple principle:
+
+> **Threat intelligence is most valuable when it becomes actionable before the attacker has time to establish a foothold.**
+
+The project combines open-source intelligence, automated analysis, emerging-domain research, and Suricata enforcement to explore a more proactive model of phishing defense.
+
+Rather than waiting for every malicious domain to become a known IOC, Antiphishing investigates whether **the infrastructure surrounding an emerging phishing campaign can provide useful defensive signals earlier**.
+
+That is the project's core idea:
+
+**From emerging infrastructure → to intelligence → to detection → to prevention.**
