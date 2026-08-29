@@ -19,7 +19,7 @@ jobs:
       - name: Load-test rules file (suricata -T)
         run: |
           sudo mkdir -p /usr/local/etc/suricata/rules
-          cp -v *.lst /usr/local/etc/suricata/rules/
+          sudo cp -v *.lst /usr/local/etc/suricata/rules/
 
           set -e
 
