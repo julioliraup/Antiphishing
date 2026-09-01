@@ -223,3 +223,5 @@ refund-whatsapp.com
 return-whatsapp.com
 secondwise-capital.com
 video-whatsapp.com
+action-google.com
+lakeshore-microsoft.com
