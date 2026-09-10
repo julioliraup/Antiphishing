@@ -369,3 +369,11 @@ vnc-whatsapp.com
 vxlan-whatsapp.com
 wallet-whatsapp.com
 wise-solutions-inc.net
+acct-receiv-linkedin.com
+deepmeta-ai.com
+name-whatsapp.com
+pc-cn-whatsapp.com
+pineapple-advisory.com
+plasma-whatsapp.com
+supportdesk-ledger.com
+sync-coinbase.com
