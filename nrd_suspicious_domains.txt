@@ -470,3 +470,11 @@ st-whatsapp.com
 wg-whatsapp.com
 ww-whatsapp.com
 xj-whatsapp.com
+ac-linkedin.com
+bi-whatsapp.com
+ledger-md.com
+ledger-nest.com
+server2-google.com
+stockholm-hotel-ledger.com
+zm-whatsapp.com
+zt-whatsapp.com
