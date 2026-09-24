@@ -1,0 +1,93 @@
+name: Update Vectors
+
+on:
+  schedule:
+    - cron: "0 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-vectors
+  cancel-in-progress: true
+
+jobs:
+  update-vectors:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Update vectors and rules
+        run: python update_rules.py
+
+      - name: Generate OPNsense-compatible rules
+        run: python generate_pcre_rules.py
+
+      - name: Create MD5 checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          md5sum antiphishing.rules > antiphishing.rules.md5
+          md5sum antiphishing-opnsense.rules > antiphishing-opnsense.rules.md5
+
+      - name: Create distribution tarballs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          tar -czf antiphishing.tar.gz \
+            antiphishing.rules \
+            antiphishing.rules.md5 \
+            phishing.lst \
+            phishing_ips.lst \
+            nrd_suspicious_domains.txt
+
+          tar -czf antiphishing-opnsense.tar.gz \
+            antiphishing-opnsense.rules \
+            antiphishing-opnsense.rules.md5
+
+          md5sum antiphishing.tar.gz > antiphishing.tar.gz.md5
+          md5sum antiphishing-opnsense.tar.gz > antiphishing-opnsense.tar.gz.md5
+
+      - name: Commit updated vectors
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            antiphishing.rules \
+            antiphishing.rules.md5 \
+            antiphishing-opnsense.rules \
+            antiphishing-opnsense.rules.md5 \
+            antiphishing.tar.gz \
+            antiphishing.tar.gz.md5 \
+            antiphishing-opnsense.tar.gz \
+            antiphishing-opnsense.tar.gz.md5 \
+            phishing.lst \
+            phishing_ips.lst \
+            nrd_suspicious_domains.txt \
+            sid_tracker.txt
+
+          if git diff --cached --quiet; then
+            echo "No vector changes to commit."
+            exit 0
+          fi
+
+          git commit -m "update vectors"
+          git push origin HEAD:main
