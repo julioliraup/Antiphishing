@@ -33,16 +33,12 @@ jobs:
 
       - name: Update vectors and rules
         run: python update_rules.py
-
-      - name: Generate OPNsense-compatible rules
-        run: python generate_pcre_rules.py
-
+        
       - name: Create MD5 checksums
         shell: bash
         run: |
           set -euo pipefail
           md5sum antiphishing.rules > antiphishing.rules.md5
-          md5sum antiphishing-opnsense.rules > antiphishing-opnsense.rules.md5
 
       - name: Create distribution tarballs
         shell: bash
@@ -56,13 +52,6 @@ jobs:
             phishing_ips.lst \
             nrd_suspicious_domains.txt
 
-          tar -czf antiphishing-opnsense.tar.gz \
-            antiphishing-opnsense.rules \
-            antiphishing-opnsense.rules.md5
-
-          md5sum antiphishing.tar.gz > antiphishing.tar.gz.md5
-          md5sum antiphishing-opnsense.tar.gz > antiphishing-opnsense.tar.gz.md5
-
       - name: Commit updated vectors
         shell: bash
         run: |
@@ -74,11 +63,8 @@ jobs:
             antiphishing.rules \
             antiphishing.rules.md5 \
             antiphishing-opnsense.rules \
-            antiphishing-opnsense.rules.md5 \
             antiphishing.tar.gz \
             antiphishing.tar.gz.md5 \
-            antiphishing-opnsense.tar.gz \
-            antiphishing-opnsense.tar.gz.md5 \
             phishing.lst \
             phishing_ips.lst \
             nrd_suspicious_domains.txt \
