@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+  workflow_run:
+    workflows: ["Update vectors"]
+    types: [completed]
+    
 jobs:
   create-release:
     runs-on: ubuntu-latest
