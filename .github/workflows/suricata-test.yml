@@ -3,6 +3,11 @@ name: suricata-test
 on:
   push:
     branches: [main]
+
+  workflow_run:
+    workflows: ["Update vectors"]
+    types: [completed]
+ 
   pull_request:
 
 jobs:
