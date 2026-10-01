@@ -597,3 +597,8 @@ startstart-whatsapp.com
 techtech-whatsapp.com
 w9-whatsapp.com
 yf-whatsapp.com
+block-whatsapp.com
+esp-apple.com
+ident-revolut.com
+imim-whatsapp.com
+videovideo-whatsapp.com
