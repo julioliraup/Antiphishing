@@ -602,3 +602,6 @@ esp-apple.com
 ident-revolut.com
 imim-whatsapp.com
 videovideo-whatsapp.com
+santanderbank-group.com
+santanderbank-investing.com
+store-security-shopify.com
