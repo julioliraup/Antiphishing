@@ -643,3 +643,12 @@ netflix-register.com
 pfd-adobe.com
 serviceactivation-google.co
 signin-google.com
+canopy-ledger.com
+gps-apple.com
+k1-whatsapp-web.com
+miamibiscaynebay-cruise.com
+portalweb-whatsapp.com
+synchronize-metamask.io
+webcenter-whatsapp.com
+webclient-whatsapp.com
+webconnect-whatsapp.com
