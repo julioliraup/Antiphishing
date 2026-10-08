@@ -303,9 +303,12 @@ The preferred installation method depends on the target platform.
 See the OPNsense documentation and the project wiki for the current integration status and installation procedure.
 
 ### IPFIRE
+
 IPFire julioliraup/antiphishing ruleset on intrusion prevention
 
-<a hre="https://github.com/julioliraup/Antiphishing/wiki/Configuring-the-Antiphishing-Ruleset-on-IPFire"><img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/></a>
+<a href="https://github.com/julioliraup/Antiphishing/wiki/Configuring-the-Antiphishing-Ruleset-on-IPFire">
+        <img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/>
+</a>
 
 ---
 
