@@ -277,10 +277,6 @@ The preferred installation method depends on the target platform.
 
 ### GNU/Linux
 
-See the installation and configuration guide:
-
-https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux
-
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Linux">
   <img height="100" alt="Configuration-Ruleset-on-GNU-Linux" src="https://github.com/user-attachments/assets/859b9e29-a650-48b2-968c-628e8c345b5b" />
   <img height="100" alt="Configuration-Ruleset-on-cearos" src="https://github.com/user-attachments/assets/083098a4-64b9-4c29-994d-75dcd61fa695" />
@@ -288,15 +284,11 @@ https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-GNU-Li
 
 ### pfSense
 
-https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-pfSense
-
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration-Ruleset-on-pfSense">
   <img height="100" alt="Configuration-Ruleset-on-pfSense" src="https://github.com/user-attachments/assets/55fcc78d-af99-4e7f-9022-75b644f3c497" />
 </a>
 
 ### IDSTower
-
-https://github.com/julioliraup/Antiphishing/wiki/Configuration:-Antiphishing-Ruleset-on-IDSTower
 
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Configuration:-Antiphishing-Ruleset-on-IDSTower">
   <img height="90" alt="Configuration: Antiphishing Ruleset on IDSTower" src="https://github.com/user-attachments/assets/1044e7a6-13fa-48f4-bbfc-1a7662f5afd0" />
@@ -304,17 +296,16 @@ https://github.com/julioliraup/Antiphishing/wiki/Configuration:-Antiphishing-Rul
 
 ### OPNsense
 
-The Antiphishing ruleset is available through the OPNsense IDS/IPS content ecosystem.
-
 <a href="https://github.com/julioliraup/Antiphishing/wiki/Quick-Guide:-Installing-Antiphishing-on-OPNsense-(-=-26.7.2)">
   <img height="90" alt="OPNsense Antiphishing ruleset on Suricata" src="https://github.com/user-attachments/assets/551b04de-b34c-4856-85b7-1928639bc6ec" />
 </a>
 
 See the OPNsense documentation and the project wiki for the current integration status and installation procedure.
 
-### Upcoming Guides
+### IPFIRE
+IPFire julioliraup/antiphishing ruleset on intrusion prevention
 
-<img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/>
+<a hre="https://github.com/julioliraup/Antiphishing/wiki/Configuring-the-Antiphishing-Ruleset-on-IPFire"><img height="100" alt="IPFire julioliraup/antiphishing ruleset on intrusion prevention" src="https://github.com/user-attachments/assets/a8f0e322-7d18-4219-b5fb-32188e2207a3"/></a>
 
 ---
 
