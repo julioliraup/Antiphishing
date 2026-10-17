@@ -1,6 +1,6 @@
 # Suricata Antiphishing rules
 # Created by github.com/julioliraup/Antiphishing
-# Last updated: 2026-10-17 03:36:51 GMT+0000
+# Last updated: 2026-10-17 10:22:05 GMT+0000
 # SID range: 6000000-6100000
 #
 alert dns $HOME_NET any -> any any (msg:"AT DNS query to suspicious domain - Phishing"; dns.query; dataset:isset,phishing_domains,type string,load /usr/local/share/suricata/antiphishing-datasets/phishing.lst; reference:url,github.com/julioliraup/Antiphishing; reference:url,julioliraup.github.io/AT/signature.html?sid=6000000; classtype:social-engineering; sid:6000000; rev:1; metadata: signature_severity Major, created_et 2025_02_19;)
@@ -28225,3 +28225,4 @@ alert http $HOME_NET any -> any any (msg:"AT related malicious URL (38hm-t2g30-n
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (sp18ct10-ranvok-biz-qameli.pages.dev/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"sp18ct10-ranvok-biz-qameli.pages.dev"; endswith; reference:url,openphish.com; reference:url,julioliraup.github.io/AT/signature.html?sid=6028216; classtype:social-engineering; sid:6028216; rev:1; metadata: signature_severity Major, created_et 2026_10_17;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (net16ct-lum-biz-zaro-feni.pages.dev/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"net16ct-lum-biz-zaro-feni.pages.dev"; endswith; reference:url,openphish.com; reference:url,julioliraup.github.io/AT/signature.html?sid=6028217; classtype:social-engineering; sid:6028217; rev:1; metadata: signature_severity Major, created_et 2026_10_17;)
 alert http $HOME_NET any -> any any (msg:"AT related malicious URL (www.qv7xmk29rwp4zn8ty6fd3h5c1j0a9b2x8k4.vercel.app/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"www.qv7xmk29rwp4zn8ty6fd3h5c1j0a9b2x8k4.vercel.app"; endswith; reference:url,openphish.com; reference:url,julioliraup.github.io/AT/signature.html?sid=6028218; classtype:social-engineering; sid:6028218; rev:1; metadata: signature_severity Major, created_et 2026_10_17;)
+alert http $HOME_NET any -> any any (msg:"AT related malicious URL (majeal.com/)"; flow:established,to_server; http.uri; content:"/"; startswith; fast_pattern; http.host; content:"majeal.com"; endswith; reference:url,phishstats.info; reference:url,julioliraup.github.io/AT/signature.html?sid=6028219; classtype:social-engineering; sid:6028219; rev:1; metadata: signature_severity Major, created_et 2026_10_17;)
