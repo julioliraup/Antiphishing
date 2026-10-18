@@ -802,3 +802,17 @@ roc-metal.com
 transfer-ledger.com
 usa-binance.com
 webh5-whatsapp.com
+admin-hsbcnet.com
+apihub-whatsapp.com
+chathub-whatsapp.com
+devsys-whatsapp.com
+kitdev-whatsapp.com
+mp3google-voice.com
+netlab-whatsapp.com
+runsec-whatsapp.com
+signature-ledger.com
+syncly-whatsapp.com
+useapi-whatsapp.com
+usedev-whatsapp.com
+wapstatic-whatsapp.com
+webops-whatsapp.com
