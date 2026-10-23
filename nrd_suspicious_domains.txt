@@ -900,3 +900,9 @@ sysbot-whatsapp.com
 webkey-whatsapp.com
 websession-whatsapp.com
 websverify-whatsapp.com
+460726-binance.com
+canal-whatsapp.com
+google-insight.com
+sellamazon-aws.com
+tests-wise.com
+toppc-whatsapp.com
