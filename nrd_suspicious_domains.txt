@@ -973,3 +973,17 @@ webrun-whatsapp.com
 websafe-whatsapp.com
 website-whatsapp.com
 wlink-whatsapp.com
+4-trustwallet.com
+apx-ledger.com
+contacts-shopify.com
+details-coinbase.com
+fcs-metal.com
+giant-metal.com
+go-google.com
+layerwise-ai.com
+notifverify-chase.com
+secure-backup-ledger.com
+synchro-ledger-us.com
+the-wiser-way.com
+webindex-whatsapp.com
+web-zh-whatsapp.com
