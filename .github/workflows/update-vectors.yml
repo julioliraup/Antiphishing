@@ -1,3 +1,4 @@
+```yaml
 name: Update Vectors
 
 on:
@@ -16,124 +17,115 @@ jobs:
   update-vectors:
     runs-on: ubuntu-latest
 
-  steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
-    with:
-      fetch-depth: 0
-  
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: "3.x"
-      cache: pip
-  
-  - name: Install Python dependencies
-    run: python -m pip install -r requirements.txt
-  
-  - name: Update base ruleset (Suricata)
-    run: python update_rules.py
-  
-  - name: Generate platform-specific variants and all artifacts
-    shell: bash
-    run: |
-        set -euo pipefail
-  
-        echo "=== Creating MD5 checksums ==="
-        md5sum antiphishing.rules > antiphishing.rules.md5
-        echo "✓ antiphishing.rules.md5"
-  
-        echo ""
-        echo "=== Generating OPNsense rules ==="
-        sed 's|load |load /usr/local/etc/suricata/rules/|g' antiphishing.rules > antiphishing-opnsense.rules
-        echo "✓ antiphishing-opnsense.rules"
-  
-        echo ""
-        echo "=== Generating pfSense rules ==="
-        sed 's|load |load /usr/local/share/suricata/antiphishing-datasets/|g' antiphishing.rules > antiphishing-pfsense.rules
-        echo "✓ antiphishing-pfsense.rules"
-  
-        echo ""
-        echo "=== Generating IPFire rules ==="
-        sed 's|load |load datasets/|g' antiphishing.rules > antiphishing-ipfire.rules
-        echo "✓ antiphishing-ipfire.rules"
-  
-        echo ""
-        echo "=== Creating distribution tarballs ==="
-  
-        # Clean old tarballs
-        rm -f \
-          antiphishing.tar.gz \
-          antiphishing-opnsense.tar.gz \
-          antiphishing-pfsense.tar.gz \
-          antiphishing-ipfire.tar.gz
-  
-        # Suricata tarball
-        tar -czf antiphishing.tar.gz \
-          antiphishing.rules \
-          antiphishing.rules.md5 \
-          phishing.lst \
-          phishing_ips.lst \
-          nrd_suspicious_domains.txt
-        echo "✓ antiphishing.tar.gz"
-  
-        # OPNsense tarball
-        tar -czf antiphishing-opnsense.tar.gz \
-          antiphishing-opnsense.rules \
-          phishing.lst \
-          phishing_ips.lst
-        echo "✓ antiphishing-opnsense.tar.gz"
-  
-        # pfSense tarball
-        tar -czf antiphishing-pfsense.tar.gz \
-          antiphishing-pfsense.rules \
-          phishing.lst \
-          phishing_ips.lst
-        echo "✓ antiphishing-pfsense.tar.gz"
-  
-        # IPFire tarball
-        mkdir -p ipfire-package/datasets
-  
-        cp antiphishing-ipfire.rules ipfire-package/
-        cp phishing.lst ipfire-package/datasets/
-        cp phishing_ips.lst ipfire-package/datasets/
-        cp nrd_suspicious_domains.txt ipfire-package/datasets/
-  
-        tar -czf antiphishing-ipfire.tar.gz \
-          -C ipfire-package \
-          antiphishing-ipfire.rules \
-          datasets/
-  
-        rm -rf ipfire-package
-  
-        echo "✓ antiphishing-ipfire.tar.gz"
-  
-  - name: Commit updated vectors
-    shell: bash
-    run: |
-      set -euo pipefail
-      git config user.name "julioliraup"
-      git config user.email "jul10l1r4@disroot.org"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      git add \
-        antiphishing.rules \
-        antiphishing.rules.md5 \
-        antiphishing-opnsense.rules \
-        antiphishing-pfsense.rules \
-        antiphishing-ipfire.rules \
-        antiphishing.tar.gz \
-        antiphishing-opnsense.tar.gz \
-        antiphishing-pfsense.tar.gz \
-        antiphishing-ipfire.tar.gz \
-        phishing.lst \
-        phishing_ips.lst \
-        nrd_suspicious_domains.txt \
-        sid_tracker.txt
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+          cache: pip
 
-      if git diff --cached --quiet; then
-        echo "No vector changes to commit."
-        exit 0
-      fi
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
 
-      git commit -m ":tada: update rulesets"
-      git push origin HEAD:main
+      - name: Update base ruleset (Suricata)
+        run: python update_rules.py
+
+      - name: Generate platform-specific variants and all artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "=== Creating MD5 checksums ==="
+          md5sum antiphishing.rules > antiphishing.rules.md5
+          echo "✓ antiphishing.rules.md5"
+
+          echo ""
+          echo "=== Generating OPNsense rules ==="
+          sed 's|load |load /usr/local/etc/suricata/rules/|g' antiphishing.rules > antiphishing-opnsense.rules
+
+          echo ""
+          echo "=== Generating pfSense rules ==="
+          sed 's|load |load /usr/local/share/suricata/antiphishing-datasets/|g' antiphishing.rules > antiphishing-pfsense.rules
+
+          echo ""
+          echo "=== Generating IPFire rules ==="
+          sed 's|load |load datasets/|g' antiphishing.rules > antiphishing-ipfire.rules
+
+          echo ""
+          echo "=== Creating distribution tarballs ==="
+
+          rm -f \
+            antiphishing.tar.gz \
+            antiphishing-opnsense.tar.gz \
+            antiphishing-pfsense.tar.gz \
+            antiphishing-ipfire.tar.gz
+
+          tar -czf antiphishing.tar.gz \
+            antiphishing.rules \
+            antiphishing.rules.md5 \
+            phishing.lst \
+            phishing_ips.lst \
+            nrd_suspicious_domains.txt
+
+          tar -czf antiphishing-opnsense.tar.gz \
+            antiphishing-opnsense.rules \
+            phishing.lst \
+            phishing_ips.lst
+
+          tar -czf antiphishing-pfsense.tar.gz \
+            antiphishing-pfsense.rules \
+            phishing.lst \
+            phishing_ips.lst
+
+          mkdir -p ipfire-package/datasets
+
+          cp antiphishing-ipfire.rules ipfire-package/
+          cp phishing.lst ipfire-package/datasets/
+          cp phishing_ips.lst ipfire-package/datasets/
+          cp nrd_suspicious_domains.txt ipfire-package/datasets/
+
+          tar -czf antiphishing-ipfire.tar.gz \
+            -C ipfire-package \
+            antiphishing-ipfire.rules \
+            datasets/
+
+          rm -rf ipfire-package
+
+          echo "✓ All distribution packages generated."
+
+      - name: Commit updated vectors
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "julioliraup"
+          git config user.email "jul10l1r4@disroot.org"
+
+          git add \
+            antiphishing.rules \
+            antiphishing.rules.md5 \
+            antiphishing-opnsense.rules \
+            antiphishing-pfsense.rules \
+            antiphishing-ipfire.rules \
+            antiphishing.tar.gz \
+            antiphishing-opnsense.tar.gz \
+            antiphishing-pfsense.tar.gz \
+            antiphishing-ipfire.tar.gz \
+            phishing.lst \
+            phishing_ips.lst \
+            nrd_suspicious_domains.txt \
+            sid_tracker.txt
+
+          if git diff --cached --quiet; then
+            echo "No vector changes to commit."
+            exit 0
+          fi
+
+          git commit -m ":tada: update rulesets"
+          git push origin HEAD:main
+```
