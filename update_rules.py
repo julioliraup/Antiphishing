@@ -152,7 +152,7 @@ def create_suricata_rules(urls, reference, last_sid, existing_rules):
                 phish_url = url
 
             new_phish_url = phish_url.replace('.',' .')
-            new_phish_url = phish_url.replace(';','\;')
+            new_phish_url = phish_url.replace(';','\\;')
 
             if "/" not in phish_url:
                 # Se for apenas domínio, adiciona à lista de phishing
