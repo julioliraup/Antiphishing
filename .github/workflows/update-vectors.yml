@@ -1,4 +1,3 @@
-```yaml
 name: Update Vectors
 
 on:
@@ -128,4 +127,3 @@ jobs:
 
           git commit -m ":tada: update rulesets"
           git push origin HEAD:main
-```
