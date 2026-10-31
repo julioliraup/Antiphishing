@@ -17,26 +17,26 @@ jobs:
     runs-on: ubuntu-latest
 
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+  - name: Checkout repository
+    uses: actions/checkout@v4
+    with:
+      fetch-depth: 0
   
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.x"
-        cache: pip
+  - name: Set up Python
+    uses: actions/setup-python@v5
+    with:
+      python-version: "3.x"
+      cache: pip
   
-    - name: Install Python dependencies
-      run: python -m pip install -r requirements.txt
+  - name: Install Python dependencies
+    run: python -m pip install -r requirements.txt
   
-    - name: Update base ruleset (Suricata)
-      run: python update_rules.py
+  - name: Update base ruleset (Suricata)
+    run: python update_rules.py
   
-    - name: Generate platform-specific variants and all artifacts
-      shell: bash
-      run: |
+  - name: Generate platform-specific variants and all artifacts
+    shell: bash
+    run: |
         set -euo pipefail
   
         echo "=== Creating MD5 checksums ==="
@@ -108,32 +108,32 @@ jobs:
   
         echo "✓ antiphishing-ipfire.tar.gz"
   
-    - name: Commit updated vectors
-      shell: bash
-      run: |
-        set -euo pipefail
-        git config user.name "julioliraup"
-        git config user.email "jul10l1r4@disroot.org"
-  
-        git add \
-          antiphishing.rules \
-          antiphishing.rules.md5 \
-          antiphishing-opnsense.rules \
-          antiphishing-pfsense.rules \
-          antiphishing-ipfire.rules \
-          antiphishing.tar.gz \
-          antiphishing-opnsense.tar.gz \
-          antiphishing-pfsense.tar.gz \
-          antiphishing-ipfire.tar.gz \
-          phishing.lst \
-          phishing_ips.lst \
-          nrd_suspicious_domains.txt \
-          sid_tracker.txt
-  
-        if git diff --cached --quiet; then
-          echo "No vector changes to commit."
-          exit 0
-        fi
-  
-        git commit -m ":tada: update rulesets"
-        git push origin HEAD:main
+  - name: Commit updated vectors
+    shell: bash
+    run: |
+      set -euo pipefail
+      git config user.name "julioliraup"
+      git config user.email "jul10l1r4@disroot.org"
+
+      git add \
+        antiphishing.rules \
+        antiphishing.rules.md5 \
+        antiphishing-opnsense.rules \
+        antiphishing-pfsense.rules \
+        antiphishing-ipfire.rules \
+        antiphishing.tar.gz \
+        antiphishing-opnsense.tar.gz \
+        antiphishing-pfsense.tar.gz \
+        antiphishing-ipfire.tar.gz \
+        phishing.lst \
+        phishing_ips.lst \
+        nrd_suspicious_domains.txt \
+        sid_tracker.txt
+
+      if git diff --cached --quiet; then
+        echo "No vector changes to commit."
+        exit 0
+      fi
+
+      git commit -m ":tada: update rulesets"
+      git push origin HEAD:main
