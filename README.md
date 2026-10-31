@@ -381,7 +381,7 @@ Its primary contribution is the **automation, correlation, analysis pipeline, an
 
 ## 🙏 Acknowledgments
 
-A special and sincere thanks to [@antixmars](https://github.com/antixmars), [@sikysikov](https://github.com/sikysikov), [@satta](https://github.com/satta), [@flipper203](https://github.com/flipper203), and [@zoomequipd](https://github.com/zoomequipd) for their contributions, insights, testing, and support.
+A special and sincere thanks to [@antixmars](https://github.com/antixmars), [@sikysikov](https://github.com/sikysikov), [@satta](https://github.com/satta), [@flipper203](https://github.com/flipper203), [@zoomequipd](https://github.com/zoomequipd) and [Bonnietwin](https://github.com/Bonnietwin) for their contributions, insights, testing, and support.
 
 Antiphishing is a collaborative ecosystem, and community feedback is an important part of improving the project's detection quality and platform compatibility.
 
