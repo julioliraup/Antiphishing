@@ -66,15 +66,26 @@ https://github.com/julioliraup/Antiphishing
 """
 
 def fetch_phishing_urls(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        if "phishstats" in url:
+    try:
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+    except requests.RequestException as error:
+        print(f"\n[!] Could not fetch {url}: {error}. Continuing without this feed.")
+        return []
+
+    if "phishstats" in url:
+        try:
             data = response.json()
-            return [item.get('url') for item in data if item.get('url')]
-        else:
-            return response.text.splitlines()
-    else:
-        raise Exception(f"Failed to fetch data: {response.status_code}")
+        except ValueError as error:
+            print(f"\n[!] Could not parse JSON from {url}: {error}. Continuing without this feed.")
+            return []
+
+        if not isinstance(data, list):
+            print(f"\n[!] Unexpected response from {url}: expected a JSON list. Continuing without this feed.")
+            return []
+        return [item.get("url") for item in data if isinstance(item, dict) and item.get("url")]
+
+    return response.text.splitlines()
 
 def get_last_sid():
     try:
@@ -152,7 +163,7 @@ def create_suricata_rules(urls, reference, last_sid, existing_rules):
                 phish_url = url
 
             new_phish_url = phish_url.replace('.',' .')
-            new_phish_url = phish_url.replace(';','\\;')
+            new_phish_url = phish_url.replace(';','\;')
 
             if "/" not in phish_url:
                 # Se for apenas domínio, adiciona à lista de phishing
@@ -403,4 +414,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
