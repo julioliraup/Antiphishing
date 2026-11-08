@@ -1141,3 +1141,17 @@ webnav-whatsapp.com
 webprime-whatsapp.com
 webshare-whatsapp.com
 workchat-whatsapp.com
+384238-apple.com
+activityid-apple.com
+adobe-billing.com
+chase-iq.com
+chatchat-whatsapp.com
+clearlink-whatsapp.com
+googo-whatsapp.com
+mapas-apple.com
+myledger-ai.com
+no-reply-revolut.com
+safelink-whatsapp.com
+shield-microsoft.com
+truetrue-whatsapp.com
+zepto-ledger.com
