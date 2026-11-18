@@ -1277,3 +1277,13 @@ v3-binance.com
 webarea-whatsapp.com
 websend-whatsapp.com
 webvoice-whatsapp.com
+194233-coinbase.com
+532939-binance.com
+581112-ledger.com
+doc-whatsapp.net
+link-whatsapp.net
+meta-camp.com
+secure40-appleid.com
+signin-microsoftonline.com
+verify-whatsapp.net
+wfmao-apple.com.cn
