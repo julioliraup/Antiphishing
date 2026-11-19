@@ -1287,3 +1287,16 @@ secure40-appleid.com
 signin-microsoftonline.com
 verify-whatsapp.net
 wfmao-apple.com.cn
+blue-bird-shopify.com
+cnhk-whatsapp.com
+crumb-wise.com
+freshweb-whatsapp.com
+globalnet-whatsapp.com
+mtproto-telegram.com
+netflix-upgrade.com
+overseas-whatsapp.com
+s1-ledger.com
+secure42-appleid.com
+solidweb-whatsapp.com
+talentledger-ai.com
+worldnet-whatsapp.com
