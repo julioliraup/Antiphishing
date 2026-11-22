@@ -1316,3 +1316,15 @@ telegram-td.org
 usd-whatsapp.com
 whatsapp-hk.com
 wwv-apple.com
+hk-edge-whatsapp.com
+hk-link-whatsapp.com
+hk-stack-whatsapp.com
+malls-tiktok.com
+meta-investors.com
+relay-zh-whatsapp.com
+ring-whatsapp.com
+secure-wallet-binance.com
+tech-hk-whatsapp.com
+tech-zh-whatsapp.com
+web-smart-whatsapp.com
+zh-dev-whatsapp.com
