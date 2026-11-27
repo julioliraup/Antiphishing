@@ -1370,3 +1370,8 @@ gv-google.com
 shulwise-demo.com
 stag-wise.com
 summary-appleid.com
+f-ledger.com
+flux-ledger.com
+fx-binance.com
+x-coinbase.com
+yingshigc-apple.com.cn
